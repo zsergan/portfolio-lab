@@ -1,0 +1,74 @@
+.progress {
+  margin: 0 0 32px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.cardGrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--bg);
+}
+
+a.card:hover,
+a.card:focus-visible {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.cardPlanned {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.cardTitle {
+  font-weight: 600;
+  color: var(--text-h);
+  font-size: 15px;
+}
+
+.cardDescription {
+  font-size: 13px;
+  line-height: 140%;
+}
+
+.cardBadge {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--code-bg);
+  color: var(--text);
+}
