@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import { RootLayout } from './RootLayout';
-import { SandboxHome } from '../pages/SandboxHome';
+import { PortfolioHome } from '../pages/PortfolioHome';
+import { LabHome } from '../pages/LabHome';
 import { NotFound } from '../pages/NotFound';
 
 export const router = createBrowserRouter([
@@ -8,9 +9,10 @@ export const router = createBrowserRouter([
     path: '/',
     element: <RootLayout />,
     children: [
-      { index: true, element: <SandboxHome /> },
-      // Future feature route example, added one at a time as demos are built:
-      // { path: 'hooks/use-reducer', lazy: () => import('../features/hooks/use-reducer/route') },
+      { index: true, element: <PortfolioHome /> },
+      { path: 'lab', element: <LabHome /> },
+      // Future tool route example, added one at a time as tools are built:
+      // { path: 'lab/json-formatter', lazy: () => import('../lab/json-formatter/route') },
       { path: '*', element: <NotFound /> },
     ],
   },

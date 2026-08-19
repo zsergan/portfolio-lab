@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.*
+
+# Personal notes — never part of the public product
+/private-notes/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
