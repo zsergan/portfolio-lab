@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { Eyebrow, QueryBoundary } from '@/components';
-import { fetchAbout } from '@/portfolio/api';
+import { fetchAbout } from '@/content/api';
+
 import styles from './AboutPage.module.css';
 
 export function AboutPage() {

@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { aboutData } from '@/portfolio/data';
+
 import { AboutPage } from './AboutPage';
+import { aboutData } from '@/content/data';
 
 function renderAboutPage() {
   const queryClient = new QueryClient();

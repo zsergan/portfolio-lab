@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { Eyebrow, QueryBoundary } from '@/components';
-import { fetchContact } from '@/portfolio/api';
+import { fetchContact } from '@/content/api';
+
 import styles from './ContactPage.module.css';
 
 export function ContactPage() {

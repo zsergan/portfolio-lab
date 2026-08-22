@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { Eyebrow, QueryBoundary, TagList } from '@/components';
-import { fetchExperience } from '@/portfolio/api';
+import { fetchExperience } from '@/content/api';
+
 import styles from './ExperiencePage.module.css';
 
 export function ExperiencePage() {
