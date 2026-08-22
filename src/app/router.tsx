@@ -5,12 +5,14 @@ import { ContactPage } from '../pages/ContactPage/ContactPage';
 import { ExperiencePage } from '../pages/ExperiencePage/ExperiencePage';
 import { LabHome } from '../pages/LabHome/LabHome';
 import { NotFound } from '../pages/NotFound/NotFound';
+import { RouteError } from '../pages/RouteError/RouteError';
 import { RootLayout } from './RootLayout';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <RouteError />,
     children: [
       { index: true, element: <AboutPage /> },
       { path: 'experience', element: <ExperiencePage /> },
