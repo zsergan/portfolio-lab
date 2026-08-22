@@ -5,8 +5,13 @@
 }
 
 .header {
-  padding: 24px;
   border-bottom: 1px solid var(--border);
+}
+
+.headerContainer {
+  margin: 0 auto;
+  padding: 24px;
+  max-width: 920px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,11 +22,22 @@
 .titleLink {
   text-decoration: none;
   color: inherit;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
   margin: 0;
-  font-size: 24px;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.role {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 0.02em;
 }
 
 .nav {
@@ -30,9 +46,12 @@
 }
 
 .navLink {
+  padding: 8px 14px;
+  border-radius: 8px;
   text-decoration: none;
   color: var(--text);
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .navLink:hover {
@@ -40,8 +59,13 @@
 }
 
 .navLinkActive {
-  color: var(--text-h);
-  font-weight: 600;
+  background-color: var(--text-h);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.navLink.navLinkActive:hover {
+  color: var(--bg);
 }
 
 .main {
