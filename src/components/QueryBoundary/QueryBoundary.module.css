@@ -1,0 +1,12 @@
+.loading,
+.error {
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
