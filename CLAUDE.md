@@ -17,6 +17,7 @@ These apply to everything in this repository, without exception, because it is (
 - **English only, always.** All code, comments, JSDoc, commit messages, README/docs, and any other file that could end up in the public repo must be written in English. Never write Russian (or any non-English text) into a project file.
 - **No real backend, no paid or keyed external APIs.** Any "server" behavior in a Lab tool is simulated — via MSW, via localStorage/IndexedDB, or by calling a free public API that requires no API key/token. Never wire up a real backend service or a paid/keyed API.
 - **`/private-notes/` is off-limits to product code.** It's gitignored and reserved for the owner's personal, local-only notes. Never place product code, demo content, or anything meant to ship there.
+- **Commit at the right granularity.** Each commit should be one coherent, reviewable change — not a giant dump of unrelated edits, and not fragmented into trivial one-liners that only make sense stitched together. Split unrelated concerns (e.g. a docs/process update vs. a feature vs. a bug fix) into separate commits; keep a single feature's implementation together rather than splitting it across commits that don't build or make sense in isolation. Write commit messages that explain *why*, matching this repo's existing message style.
 
 ## Commands
 
