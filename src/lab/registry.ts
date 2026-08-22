@@ -8,12 +8,12 @@ export interface LabTool {
   title: string;
   /** short one-liner shown on the index card */
   description: string;
-  /** what patterns/APIs this tool exercises, shown expanded on the index card */
+  /** what patterns/APIs this tool exercises — not yet rendered in the UI, kept for future use */
   highlights: string;
   status: ToolStatus;
   /** route path relative to the site root, e.g. "/lab/json-formatter" */
   path: string;
-  /** optional tags for filtering/badges, e.g. "Forms", "State Management" */
+  /** topic tags, e.g. "Forms", "State Management" — rendered as a TagList on the index card */
   topics?: string[];
   /** present only once status is 'done' — kept lazy so each tool is its own chunk */
   component?: () => Promise<{ default: ComponentType }>;

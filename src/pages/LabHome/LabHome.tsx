@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 
+import { TagList } from '@/components';
 import { labTools } from '@/lab/registry';
 
 import styles from './LabHome.module.css';
@@ -24,11 +25,13 @@ export function LabHome() {
               <Link to={tool.path} className={styles.card}>
                 <span className={styles.cardTitle}>{tool.title}</span>
                 <span className={styles.cardDescription}>{tool.description}</span>
+                {tool.topics && <TagList tags={tool.topics} />}
               </Link>
             ) : (
               <div className={`${styles.card} ${styles.cardPlanned}`}>
                 <span className={styles.cardTitle}>{tool.title}</span>
                 <span className={styles.cardDescription}>{tool.description}</span>
+                {tool.topics && <TagList tags={tool.topics} />}
                 <span className={styles.cardBadge}>planned</span>
               </div>
             )}
