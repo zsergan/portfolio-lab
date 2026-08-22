@@ -1,5 +1,7 @@
 # Portfolio & Lab
 
+[![CI](https://github.com/zsergan/portfolio-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/zsergan/portfolio-lab/actions/workflows/ci.yml)
+
 A personal portfolio site with two zones:
 
 - **Portfolio** — About (`/`), Experience (`/experience`), and Contact
