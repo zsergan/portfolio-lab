@@ -70,7 +70,7 @@ upcoming ones shown greyed out.
 
 `src/lab/registry.ts` is the single source of truth for every tool — its
 id, description, status (`planned`/`done`), route, and (once built) a
-lazy-loaded component. The Lab index page (`src/pages/LabHome.tsx`) renders
+lazy-loaded component. The Lab index page (`src/pages/LabHome/LabHome.tsx`) renders
 it as a card grid. Routing is set up in `src/app/router.tsx` on top of
 `react-router`'s data router; `src/app/RootLayout.tsx` is the shared shell.
 

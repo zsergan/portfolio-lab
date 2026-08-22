@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Eyebrow } from '@/components/Eyebrow/Eyebrow';
+import { Eyebrow } from '@/components';
 import { fetchExperience } from '@/portfolio/api';
 import pageStyles from '@/styles/portfolioPage.module.css';
 import styles from './ExperiencePage.module.css';
