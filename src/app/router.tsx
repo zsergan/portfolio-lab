@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router';
 import { RootLayout } from './RootLayout';
-import { AboutPage } from '../pages/AboutPage';
-import { ExperiencePage } from '../pages/ExperiencePage';
-import { ContactPage } from '../pages/ContactPage';
-import { LabHome } from '../pages/LabHome';
-import { NotFound } from '../pages/NotFound';
+import { AboutPage } from '../pages/AboutPage/AboutPage';
+import { ExperiencePage } from '../pages/ExperiencePage/ExperiencePage';
+import { ContactPage } from '../pages/ContactPage/ContactPage';
+import { LabHome } from '../pages/LabHome/LabHome';
+import { NotFound } from '../pages/NotFound/NotFound';
 
 export const router = createBrowserRouter([
   {
