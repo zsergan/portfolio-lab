@@ -1,4 +1,5 @@
 import { Tag } from '../Tag/Tag';
+
 import styles from './TagList.module.css';
 
 export function TagList({ tags }: { tags: string[] }) {

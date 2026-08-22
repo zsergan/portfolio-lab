@@ -1,5 +1,7 @@
 import { Link } from 'react-router';
+
 import { labTools } from '@/lab/registry';
+
 import styles from './LabHome.module.css';
 
 export function LabHome() {

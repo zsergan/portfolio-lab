@@ -1,10 +1,11 @@
 import { createBrowserRouter } from 'react-router';
-import { RootLayout } from './RootLayout';
+
 import { AboutPage } from '../pages/AboutPage/AboutPage';
-import { ExperiencePage } from '../pages/ExperiencePage/ExperiencePage';
 import { ContactPage } from '../pages/ContactPage/ContactPage';
+import { ExperiencePage } from '../pages/ExperiencePage/ExperiencePage';
 import { LabHome } from '../pages/LabHome/LabHome';
 import { NotFound } from '../pages/NotFound/NotFound';
+import { RootLayout } from './RootLayout';
 
 export const router = createBrowserRouter([
   {

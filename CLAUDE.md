@@ -24,6 +24,7 @@ These apply to everything in this repository, without exception, because it is (
 - `npm run dev` — start the Vite dev server
 - `npm run build` — typecheck (`tsc -b`) then production build
 - `npm run lint` — ESLint (flat config, `eslint.config.js`)
+- `npm run lint:fix` — ESLint with `--fix`; also runs automatically on save if your editor has the recommended ESLint extension (see `.vscode/`)
 - `npm run test` — run the Vitest suite once
 - `npm run test:watch` — Vitest in watch mode
 - Single test file: `npx vitest run src/pages/LabHome/LabHome.test.tsx`
@@ -42,6 +43,8 @@ There is no separate `tsc --noEmit` script — type errors surface via `npm run 
 **One folder per component/page.** `src/pages/<PageName>/` and `src/components/<ComponentName>/` each hold their own `<Name>.tsx` + `<Name>.module.css` + `<Name>.test.tsx` — matching the folder-per-tool convention `src/lab/<tool-id>/` already uses. Keep the full name on the file inside the folder (not `index.tsx`); it keeps editor tabs and imports unambiguous when several are open at once.
 
 **`src/components/index.ts`** re-exports every shared component, so consumers import from `@/components` (e.g. `import { Eyebrow } from '@/components'`) instead of reaching into a specific component's folder. Add a new export line there whenever a new shared component is added. This barrel is specific to `src/components` — `src/pages` and `src/lab` stay path-based (routed by `router.tsx`/`registry.ts`, not imported ad hoc), so they don't get one.
+
+**Import order** is enforced by `eslint-plugin-perfectionist`'s `sort-imports` rule (`eslint.config.js`), not just convention: every file's imports are grouped into three blank-line-separated buckets — external packages, internal (`@/` alias + relative paths), then styles — alphabetized within each. It's autofixable (`npm run lint:fix`, or on save via `.vscode/settings.json`), so don't hand-order imports; let the tool do it. `vite.config.ts` is excluded from the rule since its `/// <reference types="vitest/config" />` directive must stay the file's first line, which the rule doesn't know to preserve.
 
 **Conventions for a new Lab tool**, once you pick the next roadmap release:
 - Place it at `src/lab/<tool-id>/` (id matches the registry entry).

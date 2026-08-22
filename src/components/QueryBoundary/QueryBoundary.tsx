@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
+
 import { RetryButton } from '../RetryButton/RetryButton';
+
 import styles from './QueryBoundary.module.css';
 
 interface QueryBoundaryProps {
