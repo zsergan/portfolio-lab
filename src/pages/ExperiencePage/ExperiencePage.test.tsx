@@ -1,27 +1,34 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 import { ExperiencePage } from './ExperiencePage';
+import { fetchExperience } from '@/content/api';
 import { experienceData } from '@/content/data';
+import { renderWithQueryClient } from '@/test/renderWithQueryClient';
 
-function renderExperiencePage() {
-  const queryClient = new QueryClient();
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <ExperiencePage />
-    </QueryClientProvider>,
-  );
-}
+vi.mock('@/content/api', () => ({
+  fetchExperience: vi.fn(),
+}));
 
 describe('ExperiencePage', () => {
   it('shows a loading state, then the fetched timeline entries', async () => {
-    renderExperiencePage();
+    vi.mocked(fetchExperience).mockResolvedValueOnce(experienceData);
+
+    renderWithQueryClient(<ExperiencePage />);
 
     expect(screen.getByText('Loading…')).toBeInTheDocument();
 
     const firstEntry = experienceData[0];
     expect(await screen.findByText(firstEntry.company)).toBeInTheDocument();
     expect(screen.getByText(firstEntry.role)).toBeInTheDocument();
+  });
+
+  it('shows an error message and a working retry button when the fetch fails', async () => {
+    vi.mocked(fetchExperience).mockRejectedValueOnce(new Error('network error'));
+
+    renderWithQueryClient(<ExperiencePage />);
+
+    expect(await screen.findByText(/Couldn't load this page/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
   });
 });
