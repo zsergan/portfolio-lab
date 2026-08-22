@@ -2,7 +2,8 @@
 
 A personal portfolio site with two zones:
 
-- **Portfolio** (`/`) — about, experience, stack, and contact links.
+- **Portfolio** — About (`/`), Experience (`/experience`), and Contact
+  (`/contact`).
 - **Lab** (`/lab`) — a growing collection of small, focused dev tools that
   run entirely in your browser. No accounts, no real backend — persistence
   (where a tool needs it) is localStorage/IndexedDB, and any "network"
@@ -23,8 +24,9 @@ npm install
 npm run dev
 ```
 
-Then open the printed local URL. `/` is the Portfolio page; `/lab` lists
-every tool, with built ones linked and upcoming ones shown greyed out.
+Then open the printed local URL. `/` is the About page (with Experience and
+Contact alongside it); `/lab` lists every tool, with built ones linked and
+upcoming ones shown greyed out.
 
 ## Scripts
 

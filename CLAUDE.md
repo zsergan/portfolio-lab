@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-A personal portfolio site, meant to be public on GitHub. It has two zones: **Portfolio** (`/`) — about, experience, stack, contact — and **Lab** (`/lab`) — a growing collection of small, self-contained interactive dev tools (JSON formatter, color contrast checker, unit converter, and more as the roadmap progresses). It's a pure frontend app: no real backend, no paid or keyed external APIs. Persistence, where a tool needs it, is localStorage/IndexedDB; any "network" scenario is mocked via MSW or hits a free public API that needs no key.
+A personal portfolio site, meant to be public on GitHub. It has two zones: **Portfolio** — About (`/`), Experience (`/experience`), Contact (`/contact`) — and **Lab** (`/lab`) — a growing collection of small, self-contained interactive dev tools (JSON formatter, color contrast checker, unit converter, and more as the roadmap progresses). It's a pure frontend app: no real backend, no paid or keyed external APIs. Persistence, where a tool needs it, is localStorage/IndexedDB; any "network" scenario is mocked via MSW or hits a free public API that needs no key.
 
 Under the product surface, this project doubles as the owner's React/TypeScript refresher: each Lab tool is chosen so building it exercises a specific set of interview-relevant patterns (hooks, TS features, state management, data fetching, forms, performance, testing, a11y, component patterns, routing). Code clarity matters more than DRY-ing things up across tools — each tool is meant to be read as much as clicked.
 
@@ -35,9 +35,9 @@ There is no separate `tsc --noEmit` script — type errors surface via `npm run 
 
 **Registry-driven Lab.** `src/lab/registry.ts` is the single source of truth for every Lab tool: id, title, description, `highlights` (what patterns it demonstrates), `status: 'planned' | 'done'`, route `path`, optional `topics` tags, and (once built) a lazy `component` loader (`() => import('...')`). `src/pages/LabHome.tsx` renders the registry as a card grid at `/lab` — `planned` entries show as non-interactive greyed-out cards, `done` entries are real `<Link>`s. **Adding a tool = four edits, no more:** write the tool component, flip its registry entry to `status: 'done'` with a `component` loader, add its route in `src/app/router.tsx`, check it off in `LEARNING_ROADMAP.md`.
 
-**Portfolio** (`src/pages/PortfolioHome.tsx`) is static content — About/Experience/Stack/Contact — with no registry of its own; it's a single page, not a growing collection.
+**Portfolio** is three separate static pages — `src/pages/AboutPage.tsx` (`/`), `ExperiencePage.tsx` (`/experience`), `ContactPage.tsx` (`/contact`) — each its own route rather than anchored sections on one page, so any of them can be linked to directly. No registry of its own; they're not a growing collection like the Lab tools.
 
-**Routing** uses `react-router`'s data router (`createBrowserRouter`/`RouterProvider`, wired in `src/main.tsx` → `src/app/router.tsx`). One layout route (`src/app/RootLayout.tsx`, header + nav + `<Outlet/>`) wraps the index route (`PortfolioHome`), the Lab index route (`LabHome` at `/lab`), and a catch-all (`NotFound`). Per-tool routes are added as children of the layout route under `lab/<tool-id>`; use `lazy: () => import(...)` for code-split tool routes rather than eager imports, matching the registry's lazy-loader convention.
+**Routing** uses `react-router`'s data router (`createBrowserRouter`/`RouterProvider`, wired in `src/main.tsx` → `src/app/router.tsx`). One layout route (`src/app/RootLayout.tsx`, header + nav + `<Outlet/>`) wraps the three Portfolio routes, the Lab index route (`LabHome` at `/lab`), and a catch-all (`NotFound`). Per-tool routes are added as children of the layout route under `lab/<tool-id>`; use `lazy: () => import(...)` for code-split tool routes rather than eager imports, matching the registry's lazy-loader convention.
 
 **Conventions for a new Lab tool**, once you pick the next roadmap release:
 - Place it at `src/lab/<tool-id>/` (id matches the registry entry).

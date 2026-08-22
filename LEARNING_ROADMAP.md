@@ -22,8 +22,10 @@ Work happens one release item per session.
 
 ## v0.1 — MVP
 
-- [x] **Portfolio page** — static About / Experience / Stack / Contact
-  sections at `/`. Placeholder copy for now; real bio/links to be filled in.
+- [ ] **Portfolio pages** — About (`/`), Experience (`/experience`), and
+  Contact (`/contact`) as separate routes sharing the site header/nav.
+  Routes and empty page stubs are scaffolded; real bio/experience/contact
+  content is still to be filled in.
 - [x] **Lab index shell** — tool listing at `/lab`, planned/done card
   pattern.
 
