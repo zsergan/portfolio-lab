@@ -9,6 +9,8 @@
   --accent-border: rgba(170, 59, 255, 0.5);
   --header-bg: rgba(249, 248, 246, 0.9);
 
+  --content-width: 920px;
+
   --sans: 'Manrope Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
 
