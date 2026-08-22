@@ -39,6 +39,7 @@ upcoming ones shown greyed out.
 | `npm run lint` | Run ESLint |
 | `npm run test` | Run the test suite once |
 | `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests once with a coverage report |
 | `npm run preview` | Preview the production build locally |
 
 ## Lab tools

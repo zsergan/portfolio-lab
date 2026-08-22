@@ -27,6 +27,7 @@ These apply to everything in this repository, without exception, because it is (
 - `npm run lint:fix` — ESLint with `--fix`; also runs automatically on save if your editor has the recommended ESLint extension (see `.vscode/`)
 - `npm run test` — run the Vitest suite once
 - `npm run test:watch` — Vitest in watch mode
+- `npm run test:coverage` — run the suite once with a coverage report (no enforced threshold, informational only)
 - Single test file: `npx vitest run src/pages/LabHome/LabHome.test.tsx`
 - Single test by name: `npx vitest run -t "renders every registered tool title"`
 
@@ -45,6 +46,8 @@ There is no separate `tsc --noEmit` script — type errors surface via `npm run 
 **`src/components/index.ts`** re-exports every shared component, so consumers import from `@/components` (e.g. `import { Eyebrow } from '@/components'`) instead of reaching into a specific component's folder. Add a new export line there whenever a new shared component is added. This barrel is specific to `src/components` — `src/pages` and `src/lab` stay path-based (routed by `router.tsx`/`registry.ts`, not imported ad hoc), so they don't get one.
 
 **Import order** is enforced by `eslint-plugin-perfectionist`'s `sort-imports` rule (`eslint.config.js`), not just convention: every file's imports are grouped into three blank-line-separated buckets — external packages, internal (`@/` alias + relative paths), then styles — alphabetized within each. It's autofixable (`npm run lint:fix`, or on save via `.vscode/settings.json`), so don't hand-order imports; let the tool do it. `vite.config.ts` is excluded from the rule since its `/// <reference types="vitest/config" />` directive must stay the file's first line, which the rule doesn't know to preserve.
+
+**CI and local checks.** `.github/workflows/ci.yml` runs Lint/Build/Test as three separate jobs on every PR and on push to `main`; `main` has branch protection requiring all three to pass before merge, so a failing PR physically can't be merged, not just flagged. Locally, Husky runs `lint-staged` (`eslint --fix` on staged `*.{ts,tsx}` files) on `pre-commit`, and the full `lint && build && test` on `pre-push` — these are a convenience to catch problems before they reach GitHub, not the source of truth (they can be bypassed with `--no-verify`; CI is the real gate). `.github/dependabot.yml` opens weekly PRs for outdated npm packages and Action versions, which get validated by the same CI workflow.
 
 **Conventions for a new Lab tool**, once you pick the next roadmap release:
 - Place it at `src/lab/<tool-id>/` (id matches the registry entry).
