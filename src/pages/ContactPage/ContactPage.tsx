@@ -22,7 +22,12 @@ export function ContactPage() {
             {data.map((row) => (
               <li key={row.label} className={styles.row}>
                 <span className={styles.label}>{row.label}</span>
-                <a className={styles.value} href={row.href}>
+                <a
+                  className={styles.value}
+                  href={row.href}
+                  target={row.href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={row.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                >
                   {row.value}
                 </a>
               </li>

@@ -29,7 +29,17 @@ export function ExperiencePage() {
                 <span className={styles.years}>{entry.years}</span>
                 <span className={styles.role}>{entry.role}</span>
                 <span className={styles.company}>{entry.company}</span>
+                {entry.client && <span className={styles.client}>{entry.client}</span>}
                 <p className={styles.description}>{entry.description}</p>
+                {entry.highlights && (
+                  <ul className={styles.highlights}>
+                    {entry.highlights.map((highlight) => (
+                      <li key={highlight} className={styles.highlight}>
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <TagList tags={entry.tags} />
               </li>
             ))}
