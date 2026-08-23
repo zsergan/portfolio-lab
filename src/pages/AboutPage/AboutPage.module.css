@@ -8,6 +8,12 @@
   color: var(--text-h);
 }
 
+.headingSkeleton {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
 .intro {
   display: flex;
   flex-direction: column;

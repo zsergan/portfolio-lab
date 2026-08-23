@@ -8,12 +8,18 @@ interface QueryBoundaryProps {
   isPending: boolean;
   isError: boolean;
   onRetry: () => void;
+  loading: ReactNode;
   children: ReactNode;
 }
 
-export function QueryBoundary({ isPending, isError, onRetry, children }: QueryBoundaryProps) {
+export function QueryBoundary({ isPending, isError, onRetry, loading, children }: QueryBoundaryProps) {
   if (isPending) {
-    return <p className={styles.loading}>Loading…</p>;
+    return (
+      <div role="status" aria-live="polite">
+        {loading}
+        <span className="sr-only">Loading…</span>
+      </div>
+    );
   }
 
   if (isError) {

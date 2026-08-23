@@ -46,3 +46,15 @@
 .description {
   margin-bottom: 12px;
 }
+
+.entrySkeletonBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tagListSkeleton {
+  display: flex;
+  gap: 8px;
+}

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { ExperiencePageSkeleton } from './ExperiencePageSkeleton';
 import { Eyebrow, QueryBoundary, TagList } from '@/components';
 import { fetchExperience } from '@/content/api';
 
@@ -15,7 +16,12 @@ export function ExperiencePage() {
     <div>
       <Eyebrow>experience</Eyebrow>
 
-      <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch}>
+      <QueryBoundary
+        isPending={isPending}
+        isError={isError}
+        onRetry={refetch}
+        loading={<ExperiencePageSkeleton />}
+      >
         {data && (
           <ul className={styles.timeline}>
             {data.map((entry) => (

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { AboutPageSkeleton } from './AboutPageSkeleton';
 import { Eyebrow, QueryBoundary } from '@/components';
 import { fetchAbout } from '@/content/api';
 
@@ -15,7 +16,7 @@ export function AboutPage() {
     <div>
       <Eyebrow>about</Eyebrow>
 
-      <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch}>
+      <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch} loading={<AboutPageSkeleton />}>
         {data && (
           <>
             <h2 className={styles.heading}>{data.heading}</h2>

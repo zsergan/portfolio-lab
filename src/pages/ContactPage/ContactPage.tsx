@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { ContactPageSkeleton } from './ContactPageSkeleton';
 import { Eyebrow, QueryBoundary } from '@/components';
 import { fetchContact } from '@/content/api';
 
@@ -15,7 +16,7 @@ export function ContactPage() {
     <div>
       <Eyebrow>contact</Eyebrow>
 
-      <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch}>
+      <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch} loading={<ContactPageSkeleton />}>
         {data && (
           <ul className={styles.rowList}>
             {data.map((row) => (
