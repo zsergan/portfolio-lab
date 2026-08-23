@@ -4,4 +4,6 @@ export { QueryBoundary } from './QueryBoundary/QueryBoundary';
 export { Skeleton } from './Skeleton/Skeleton';
 export { Tag } from './Tag/Tag';
 export { TagList } from './TagList/TagList';
+export { TextArea } from './TextArea/TextArea';
+export { TextAreaOutput } from './TextAreaOutput/TextAreaOutput';
 export { Toggle } from './Toggle/Toggle';
