@@ -11,7 +11,8 @@ interface BackLinkProps {
 export function BackLink({ to, children }: BackLinkProps) {
   return (
     <Link to={to} className={styles.backLink}>
-      ← {children}
+      <span aria-hidden="true">← </span>
+      {children}
     </Link>
   );
 }

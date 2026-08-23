@@ -12,7 +12,17 @@ describe('BackLink', () => {
       </MemoryRouter>,
     );
 
-    const link = screen.getByRole('link', { name: '← Back to Lab' });
+    const link = screen.getByRole('link', { name: 'Back to Lab' });
     expect(link).toHaveAttribute('href', '/lab');
+  });
+
+  it('hides the decorative arrow from the accessible name', () => {
+    render(
+      <MemoryRouter>
+        <BackLink to="/lab">Back to Lab</BackLink>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('link')).toHaveTextContent('← Back to Lab');
   });
 });
