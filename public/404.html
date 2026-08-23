@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Zakhar Sergan — Senior Software Engineer</title>
+    <script>
+      // Redirects deep links to index.html so React Router can handle them.
+      // GitHub Pages has no server-side rewrites, so this is the standard
+      // workaround for client-side routing: https://github.com/rafgraph/spa-github-pages
+      var pathSegmentsToKeep = 1; // keep "/portfolio-lab" (the Pages project subpath)
+
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') +
+          '/?/' +
+          l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
