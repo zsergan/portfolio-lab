@@ -1,6 +1,8 @@
 export { BackLink } from './BackLink/BackLink';
 export { Button } from './Button/Button';
-export { Eyebrow } from './Eyebrow/Eyebrow';
+export { Caption } from './typography/Caption/Caption';
+export { Description } from './typography/Description/Description';
+export { Eyebrow } from './typography/Eyebrow/Eyebrow';
 export { QueryBoundary } from './QueryBoundary/QueryBoundary';
 export { Skeleton } from './Skeleton/Skeleton';
 export { Tag } from './Tag/Tag';
