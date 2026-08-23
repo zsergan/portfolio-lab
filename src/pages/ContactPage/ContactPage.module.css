@@ -11,8 +11,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 16px 0;
   border-bottom: 1px solid var(--border);
+}
+
+.row > * {
+  min-width: 0;
 }
 
 .row:first-child {
@@ -32,6 +37,8 @@
   font-weight: var(--weight-regular);
   color: var(--text);
   text-decoration: none;
+  overflow-wrap: anywhere;
+  text-align: right;
 }
 
 .value:hover {
