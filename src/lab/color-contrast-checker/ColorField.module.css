@@ -1,0 +1,55 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.hexInput {
+  width: 100px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+}
+
+.hexInput:focus-visible {
+  outline: none;
+  border-color: var(--accent-border);
+}
+
+.hexInput[aria-invalid='true'] {
+  border-color: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hexInput[aria-invalid='true'] {
+    border-color: #f87171;
+  }
+}
+
+.hint {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+}
