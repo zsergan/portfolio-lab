@@ -19,8 +19,11 @@ export const router = createBrowserRouter(
         { path: 'experience', element: <ExperiencePage /> },
         { path: 'contact', element: <ContactPage /> },
         { path: 'lab', element: <LabHome /> },
-        // Future tool route example, added one at a time as tools are built:
-        // { path: 'lab/json-formatter', lazy: () => import('../lab/json-formatter/route') },
+        {
+          path: 'lab/json-formatter',
+          lazy: () =>
+            import('../lab/json-formatter/JsonFormatterPage').then((m) => ({ Component: m.JsonFormatterPage })),
+        },
         { path: '*', element: <NotFound /> },
       ],
     },

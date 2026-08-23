@@ -24,7 +24,17 @@ describe('LabHome', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('JSON Formatter & Validator')).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /JSON Formatter/ })).not.toBeInTheDocument();
+    expect(screen.getByText('Color Contrast Checker')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Color Contrast/ })).not.toBeInTheDocument();
+  });
+
+  it('renders done tools as real links', () => {
+    render(
+      <MemoryRouter>
+        <LabHome />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('link', { name: /JSON Formatter/ })).toBeInTheDocument();
   });
 });
