@@ -51,11 +51,26 @@
 }
 
 .nav {
+  position: relative;
   display: flex;
   gap: 20px;
 }
 
+.navPill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 8px;
+  background-color: var(--text-h);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .navLink {
+  position: relative;
+  z-index: 1;
   padding: 8px 14px;
   border-radius: 8px;
   text-decoration: none;
@@ -64,6 +79,7 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   line-height: 1.2;
+  transition: color 0.2s ease;
 }
 
 .navLink:hover,
@@ -72,7 +88,6 @@
 }
 
 .navLinkActive {
-  background-color: var(--text-h);
   color: var(--bg);
   font-weight: var(--weight-bold);
 }
@@ -80,6 +95,12 @@
 .navLink.navLinkActive:hover,
 .navLink.navLinkActive:focus-visible {
   color: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navPill {
+    transition: none;
+  }
 }
 
 .main {
