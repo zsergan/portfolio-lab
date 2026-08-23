@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { RetryButton } from '../RetryButton/RetryButton';
+import { Button } from '../Button/Button';
 
 import styles from './QueryBoundary.module.css';
 
@@ -26,7 +26,7 @@ export function QueryBoundary({ isPending, isError, onRetry, loading, children }
     return (
       <p className={styles.error}>
         Couldn't load this page.
-        <RetryButton onClick={onRetry} />
+        <Button onClick={onRetry}>Try again</Button>
       </p>
     );
   }
