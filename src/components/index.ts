@@ -4,3 +4,4 @@ export { QueryBoundary } from './QueryBoundary/QueryBoundary';
 export { Skeleton } from './Skeleton/Skeleton';
 export { Tag } from './Tag/Tag';
 export { TagList } from './TagList/TagList';
+export { Toggle } from './Toggle/Toggle';
