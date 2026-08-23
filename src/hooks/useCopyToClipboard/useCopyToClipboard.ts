@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type CopyStatus = 'idle' | 'copied' | 'error';
 
 export function useCopyToClipboard(resetDelay = 1500) {
   const [status, setStatus] = useState<CopyStatus>('idle');
+  const resetTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    return () => clearTimeout(resetTimeout.current);
+  }, []);
 
   async function copy(text: string) {
     try {
@@ -15,7 +20,11 @@ export function useCopyToClipboard(resetDelay = 1500) {
       // surface it as an error status instead of failing silently.
       setStatus('error');
     }
-    setTimeout(() => setStatus('idle'), resetDelay);
+
+    // Cancel any pending reset from an earlier call so a rapid second copy
+    // doesn't get cut short by the first call's timer.
+    clearTimeout(resetTimeout.current);
+    resetTimeout.current = setTimeout(() => setStatus('idle'), resetDelay);
   }
 
   return { status, copy };
