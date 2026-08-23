@@ -43,8 +43,42 @@
   color: var(--accent);
 }
 
+.client {
+  display: block;
+  margin-bottom: 12px;
+  font-size: var(--text-sm);
+  font-style: italic;
+  color: var(--text);
+}
+
 .description {
   margin-bottom: 12px;
+}
+
+.highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.highlight {
+  position: relative;
+  padding-left: 16px;
+  color: var(--text);
+}
+
+.highlight::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .entrySkeletonBody {

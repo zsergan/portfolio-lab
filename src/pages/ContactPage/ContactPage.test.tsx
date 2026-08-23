@@ -23,6 +23,19 @@ describe('ContactPage', () => {
     expect(screen.getByText(firstRow.value)).toBeInTheDocument();
   });
 
+  it('opens external links in a new tab, but keeps mailto in the same tab', async () => {
+    vi.mocked(fetchContact).mockResolvedValueOnce(contactData);
+
+    renderWithQueryClient(<ContactPage />);
+
+    const emailLink = await screen.findByText('zrsergan@gmail.com');
+    expect(emailLink).not.toHaveAttribute('target');
+
+    const githubLink = screen.getByText('github.com/zsergan');
+    expect(githubLink).toHaveAttribute('target', '_blank');
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
   it('shows an error message and a working retry button when the fetch fails', async () => {
     vi.mocked(fetchContact).mockRejectedValueOnce(new Error('network error'));
 
