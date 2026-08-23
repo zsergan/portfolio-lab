@@ -24,6 +24,13 @@ export const router = createBrowserRouter(
           lazy: () =>
             import('../lab/json-formatter/JsonFormatterPage').then((m) => ({ Component: m.JsonFormatterPage })),
         },
+        {
+          path: 'lab/color-contrast-checker',
+          lazy: () =>
+            import('../lab/color-contrast-checker/ColorContrastCheckerPage').then((m) => ({
+              Component: m.ColorContrastCheckerPage,
+            })),
+        },
         { path: '*', element: <NotFound /> },
       ],
     },

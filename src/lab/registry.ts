@@ -35,9 +35,13 @@ export const labTools: LabTool[] = [
     title: 'Color Contrast Checker',
     description: 'Compare two colors against WCAG AA/AAA contrast ratio thresholds.',
     highlights: 'Controlled color inputs, derived state, accessibility-first UI.',
-    status: 'planned',
+    status: 'done',
     path: '/lab/color-contrast-checker',
     topics: ['Accessibility'],
+    component: () =>
+      import('./color-contrast-checker/ColorContrastCheckerPage').then((m) => ({
+        default: m.ColorContrastCheckerPage,
+      })),
   },
   {
     id: 'unit-converter',

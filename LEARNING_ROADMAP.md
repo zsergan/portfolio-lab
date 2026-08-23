@@ -39,9 +39,9 @@ Pretty-print, minify, and validate JSON with inline error feedback.
 
 ### Color Contrast Checker (`/lab/color-contrast-checker`)
 Compare two colors against WCAG AA/AAA contrast ratio thresholds.
-- [ ] **Color Contrast Basics** — compute the WCAG contrast ratio.
+- [x] **Color Contrast Basics** — compute the WCAG contrast ratio.
   *Hint:* relative-luminance formula → `ratio = (L1 + 0.05) / (L2 + 0.05)`; compare against 4.5 (AA) / 7 (AAA).
-- [ ] **Controlled Inputs** — two color pickers driven by state.
+- [x] **Controlled Inputs** — two color pickers driven by state.
   *Hint:* `<input type="color" value={fg} onChange={(e) => setFg(e.target.value)} />`.
 
 ### Unit Converter (`/lab/unit-converter`)
