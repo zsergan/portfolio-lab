@@ -31,10 +31,10 @@ Work happens one release item per session.
 
 ### JSON Formatter & Validator (`/lab/json-formatter`)
 Pretty-print, minify, and validate JSON with inline error feedback.
-- [ ] **Discriminated Unions** — model the tool's state as a tagged union
+- [x] **Discriminated Unions** — model the tool's state as a tagged union
   so an impossible state can't be represented.
   *Hint:* `type FormatState = { status: 'idle' } | { status: 'valid'; formatted: string } | { status: 'error'; message: string }`, narrow with `switch (state.status)`.
-- [ ] **`useMemo`** — don't reformat on every keystroke.
+- [x] **`useMemo`** — don't reformat on every keystroke.
   *Hint:* `const formatted = useMemo(() => { try { return JSON.stringify(JSON.parse(input), null, 2) } catch (e) { ... } }, [input])`.
 
 ### Color Contrast Checker (`/lab/color-contrast-checker`)

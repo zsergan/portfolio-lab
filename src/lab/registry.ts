@@ -25,9 +25,10 @@ export const labTools: LabTool[] = [
     title: 'JSON Formatter & Validator',
     description: 'Pretty-print, minify, and validate JSON with inline error feedback.',
     highlights: 'Discriminated-union state (idle/valid/error), useMemo-based formatting.',
-    status: 'planned',
+    status: 'done',
     path: '/lab/json-formatter',
     topics: ['TypeScript', 'Hooks'],
+    component: () => import('./json-formatter/JsonFormatterPage').then((m) => ({ default: m.JsonFormatterPage })),
   },
   {
     id: 'color-contrast-checker',

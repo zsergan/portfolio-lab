@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { TagList } from '@/components';
+import { Caption, Description, TagList } from '@/components';
 import { labTools } from '@/lab/registry';
 
 import styles from './LabHome.module.css';
@@ -10,10 +10,8 @@ export function LabHome() {
 
   return (
     <div>
-      <h2 className={styles.heading}>Lab</h2>
-      <p className={styles.intro}>
-        Small, focused dev tools — no accounts, no servers, everything runs in your browser.
-      </p>
+      <h2>Lab</h2>
+      <Description>Small, focused dev tools — no accounts, no servers, everything runs in your browser.</Description>
       <p className={styles.progress}>
         {doneCount} / {labTools.length} tools built
       </p>
@@ -32,7 +30,7 @@ export function LabHome() {
                 <span className={styles.cardTitle}>{tool.title}</span>
                 <span className={styles.cardDescription}>{tool.description}</span>
                 {tool.topics && <TagList tags={tool.topics} />}
-                <span className={styles.cardBadge}>planned</span>
+                <Caption className={styles.cardBadge}>planned</Caption>
               </div>
             )}
           </li>

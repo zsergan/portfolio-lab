@@ -83,7 +83,7 @@ export const experienceData: ExperienceEntry[] = [
     ],
     tags: ['React', 'Node.js', 'GraphQL', 'Apollo Server', 'PostgreSQL', 'TypeORM', 'JWT'],
   },
-]
+];
 
 export const contactData: ContactRow[] = [
   { label: 'Email', value: 'zrsergan@gmail.com', href: 'mailto:zrsergan@gmail.com' },

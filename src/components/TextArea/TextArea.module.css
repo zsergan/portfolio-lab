@@ -1,0 +1,23 @@
+.textarea {
+  width: 100%;
+  height: 360px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent-border);
+}
+
+.textarea[aria-invalid='true'] {
+  border-color: var(--accent-border);
+}

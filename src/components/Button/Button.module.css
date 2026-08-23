@@ -1,4 +1,4 @@
-.retryButton {
+.button {
   padding: 6px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -10,8 +10,13 @@
   cursor: pointer;
 }
 
-.retryButton:hover,
-.retryButton:focus-visible {
+.button:hover:not(:disabled),
+.button:focus-visible:not(:disabled) {
   border-color: var(--accent-border);
   background: var(--accent-bg);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }

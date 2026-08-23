@@ -23,6 +23,7 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
+      semi: ['error', 'always'],
       // Groups imports into three blank-line-separated buckets: external
       // packages, internal (the @/ alias + relative paths), and styles.
       'perfectionist/sort-imports': [
