@@ -1,0 +1,39 @@
+.rowList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 520px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.row:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.label {
+  font-family: var(--sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-h);
+}
+
+.value {
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.value:hover {
+  color: var(--accent);
+}

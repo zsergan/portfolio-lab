@@ -1,8 +1,11 @@
 # Portfolio & Lab
 
+[![CI](https://github.com/zsergan/portfolio-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/zsergan/portfolio-lab/actions/workflows/ci.yml)
+
 A personal portfolio site with two zones:
 
-- **Portfolio** (`/`) — about, experience, stack, and contact links.
+- **Portfolio** — About (`/`), Experience (`/experience`), and Contact
+  (`/contact`).
 - **Lab** (`/lab`) — a growing collection of small, focused dev tools that
   run entirely in your browser. No accounts, no real backend — persistence
   (where a tool needs it) is localStorage/IndexedDB, and any "network"
@@ -23,8 +26,9 @@ npm install
 npm run dev
 ```
 
-Then open the printed local URL. `/` is the Portfolio page; `/lab` lists
-every tool, with built ones linked and upcoming ones shown greyed out.
+Then open the printed local URL. `/` is the About page (with Experience and
+Contact alongside it); `/lab` lists every tool, with built ones linked and
+upcoming ones shown greyed out.
 
 ## Scripts
 
@@ -35,6 +39,7 @@ every tool, with built ones linked and upcoming ones shown greyed out.
 | `npm run lint` | Run ESLint |
 | `npm run test` | Run the test suite once |
 | `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests once with a coverage report |
 | `npm run preview` | Preview the production build locally |
 
 ## Lab tools
@@ -68,7 +73,7 @@ every tool, with built ones linked and upcoming ones shown greyed out.
 
 `src/lab/registry.ts` is the single source of truth for every tool — its
 id, description, status (`planned`/`done`), route, and (once built) a
-lazy-loaded component. The Lab index page (`src/pages/LabHome.tsx`) renders
+lazy-loaded component. The Lab index page (`src/pages/LabHome/LabHome.tsx`) renders
 it as a card grid. Routing is set up in `src/app/router.tsx` on top of
 `react-router`'s data router; `src/app/RootLayout.tsx` is the shared shell.
 

@@ -1,0 +1,60 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry {
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.entry:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.years {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--text);
+}
+
+.role {
+  display: block;
+  font-family: var(--sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--text-h);
+}
+
+.company {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+}
+
+.description {
+  margin-bottom: 12px;
+}
+
+.entrySkeletonBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tagListSkeleton {
+  display: flex;
+  gap: 8px;
+}
