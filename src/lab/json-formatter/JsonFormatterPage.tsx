@@ -60,9 +60,11 @@ export function JsonFormatterPage() {
                 onChange={setMode}
               />
 
-              <Button onClick={() => copy(output)} disabled={state.status !== 'valid'}>
-                {copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy'}
-              </Button>
+              <span role="status" aria-label="Copy status">
+                <Button onClick={() => copy(output)} disabled={state.status !== 'valid'}>
+                  {copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy'}
+                </Button>
+              </span>
 
               <Button onClick={handleClear}>Clear</Button>
             </div>

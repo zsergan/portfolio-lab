@@ -41,7 +41,7 @@ describe('JsonFormatterPage', () => {
     const textarea = screen.getByLabelText('Input');
     await userEvent.type(textarea, '{{invalid');
 
-    const status = await screen.findByRole('status');
+    const status = await screen.findByRole('status', { name: '' });
     expect(status.textContent).not.toBe('');
     expect(textarea).toHaveAttribute('aria-invalid', 'true');
     expect(textarea).toHaveAttribute('aria-describedby', status.id);
@@ -76,6 +76,16 @@ describe('JsonFormatterPage', () => {
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('{\n  "a": 1\n}');
     expect(await screen.findByRole('button', { name: 'Copied' })).toBeInTheDocument();
+  });
+
+  it('announces the copy result via its own live region, separate from the validation status', async () => {
+    renderPage();
+
+    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
+
+    const copyStatus = await screen.findByRole('status', { name: 'Copy status' });
+    expect(copyStatus).toHaveTextContent('Copied');
   });
 
   it('shows a failure state and does not crash when the clipboard write fails', async () => {
