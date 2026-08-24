@@ -18,10 +18,11 @@ These apply to everything in this repository, without exception, because it is (
 - **No real backend, no paid or keyed external APIs.** Any "server" behavior is simulated — via a delayed-promise fake API module (see `src/content/api.ts`), via MSW, via localStorage/IndexedDB, or by calling a free public API that requires no API key/token. Never wire up a real backend service or a paid/keyed API.
 - **`/private-notes/` is off-limits to product code.** It's gitignored and reserved for the owner's personal, local-only notes. Never place product code, demo content, or anything meant to ship there.
 - **Commit at the right granularity.** Each commit should be one coherent, reviewable change — not a giant dump of unrelated edits, and not fragmented into trivial one-liners that only make sense stitched together. Split unrelated concerns (e.g. a docs/process update vs. a feature vs. a bug fix) into separate commits; keep a single feature's implementation together rather than splitting it across commits that don't build or make sense in isolation. Write commit messages that explain *why*, matching this repo's existing message style.
+- **Never commit or push without an explicit ask in that same turn.** Finishing a task means leaving the changes in the working tree and summarizing them — not staging, committing, or pushing on your own initiative. A prior "commit and push" does not carry forward to later turns; wait to be asked again each time.
 
 ## Commands
 
-- `npm run dev` — start the Vite dev server
+- `npm run dev` — start the Vite dev server. After finishing a task, leave it running (or start it) so the owner can browse the result themselves — check `lsof -nP -iTCP:5173 -sTCP:LISTEN` first and reuse whatever's already listening on 5173 instead of spawning a duplicate on another port or killing a server you didn't start.
 - `npm run build` — typecheck (`tsc -b`) then production build
 - `npm run lint` — ESLint (flat config, `eslint.config.js`)
 - `npm run lint:fix` — ESLint with `--fix`; also runs automatically on save if your editor has the recommended ESLint extension (see `.vscode/`)
@@ -54,8 +55,9 @@ There is no separate `tsc --noEmit` script — type errors surface via `npm run 
 **Loading states.** Any `useQuery` consumer renders its pending state through `QueryBoundary` (`src/components/QueryBoundary/`), which takes a required `loading: ReactNode` prop — never fall back to a plain "Loading…" string. Compose the loading UI from the shared `Skeleton` primitive (`src/components/Skeleton/`, a shimmering block with built-in `prefers-reduced-motion` handling); `QueryBoundary` itself wraps whatever `loading` renders in a `role="status"`/`aria-live="polite"` region with a visually-hidden announcement, so individual pages don't need to think about accessibility. The convention for a page's skeleton is to reuse that page's own real CSS Module layout classes (adding a small flex-wrapper class only where none already exists) so the skeleton's DOM shape matches the real content exactly and there's no layout shift when data arrives — see `AboutPage.tsx`/`ExperiencePage.tsx`/`ContactPage.tsx` for examples.
 
 **Conventions for a new Lab tool**, once you pick the next roadmap release:
+- Build it on its own branch, named `feat/lab-<tool-id>` and cut from `main`.
 - Place it at `src/lab/<tool-id>/` (id matches the registry entry).
-- Styling: CSS Modules (`*.module.css`) — no other styling library is installed; this is the deliberate baseline (see below).
+- Styling: CSS Modules (`*.module.css`) — no other styling library is installed; this is the deliberate baseline (see below). Default to the visual language other finished Lab tools already use (spacing, borders, panel treatment for results, etc.) rather than inventing a new look — only diverge when explicitly asked to.
 - Co-locate a test next to the component (see `src/pages/LabHome/LabHome.test.tsx` for the convention: React Testing Library, explicit `import { describe, it, expect } from 'vitest'` rather than relying on Vitest globals).
 - Import shared code via the `@/` alias (maps to `src/`, configured in both `tsconfig.app.json` and `vite.config.ts`).
 
