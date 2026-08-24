@@ -22,10 +22,9 @@ Work happens one release item per session.
 
 ## v0.1 — MVP
 
-- [ ] **Portfolio pages** — About (`/`), Experience (`/experience`), and
-  Contact (`/contact`) as separate routes sharing the site header/nav.
-  Routes and empty page stubs are scaffolded; real bio/experience/contact
-  content is still to be filled in.
+- [x] **Portfolio pages** — About (`/`), Experience (`/experience`), and
+  Contact (`/contact`) as separate routes sharing the site header/nav,
+  with real bio/experience/contact content.
 - [x] **Lab index shell** — tool listing at `/lab`, planned/done card
   pattern.
 
@@ -46,9 +45,9 @@ Compare two colors against WCAG AA/AAA contrast ratio thresholds.
 
 ### Unit Converter (`/lab/unit-converter`)
 Convert between length, weight, and temperature units.
-- [ ] **Generics** — one type-safe converter instead of one per category.
+- [x] **Generics** — one type-safe converter instead of one per category.
   *Hint:* `function convert<C extends UnitCategory>(value: number, from: Unit<C>, to: Unit<C>): number`.
-- [ ] **Utility Types** — derive unit metadata from one source type.
+- [x] **Utility Types** — derive unit metadata from one source type.
   *Hint:* `type UnitLabels = Record<Unit, string>`, `Pick<UnitConfig, 'factor' | 'label'>`.
 
 ## v0.2 — Form Builder Playground

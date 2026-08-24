@@ -24,8 +24,8 @@ describe('LabHome', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('Unit Converter')).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /Unit Converter/ })).not.toBeInTheDocument();
+    expect(screen.getByText('Form Builder Playground')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Form Builder Playground/ })).not.toBeInTheDocument();
   });
 
   it('renders done tools as real links', () => {
@@ -37,5 +37,6 @@ describe('LabHome', () => {
 
     expect(screen.getByRole('link', { name: /JSON Formatter/ })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Color Contrast Checker/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Unit Converter/ })).toBeInTheDocument();
   });
 });

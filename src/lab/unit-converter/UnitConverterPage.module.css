@@ -1,0 +1,41 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 24px 0 32px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.amountField {
+  width: 120px;
+}
+
+.unitField {
+  width: 160px;
+}
+
+.result {
+  display: grid;
+  padding: 24px 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 480px;
+}
+
+/* Both children of .result share this grid cell (see UnitConverterPage.tsx)
+   so only one is ever visibly showing text, even though both stay mounted. */
+.resultValue {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--text-display);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-h);
+  letter-spacing: -0.01em;
+}
