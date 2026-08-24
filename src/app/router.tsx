@@ -31,6 +31,11 @@ export const router = createBrowserRouter(
               Component: m.ColorContrastCheckerPage,
             })),
         },
+        {
+          path: 'lab/unit-converter',
+          lazy: () =>
+            import('../lab/unit-converter/UnitConverterPage').then((m) => ({ Component: m.UnitConverterPage })),
+        },
         { path: '*', element: <NotFound /> },
       ],
     },
