@@ -5,28 +5,26 @@ import { TextAreaOutput } from './TextAreaOutput';
 
 describe('TextAreaOutput', () => {
   it('shows the idle hint', () => {
-    render(<TextAreaOutput status="idle" content="" hint="Type something" errorMessage={null} errorId="err" />);
+    render(<TextAreaOutput status="idle" content="" hint="Type something" />);
 
     expect(screen.getByText('Type something')).toBeInTheDocument();
   });
 
   it('shows the content when valid', () => {
-    render(
-      <TextAreaOutput status="valid" content='{"a":1}' hint="hint" errorMessage={null} errorId="err" />,
-    );
+    render(<TextAreaOutput status="valid" content='{"a":1}' hint="hint" />);
 
     expect(screen.getByTestId('text-area-output')).toHaveTextContent('{"a":1}');
   });
 
-  it('announces the error message via a live region', () => {
-    render(<TextAreaOutput status="error" content="" hint="hint" errorMessage="bad input" errorId="err" />);
+  it('renders the given label', () => {
+    render(<TextAreaOutput status="idle" content="" hint="hint" label="Output" />);
 
-    expect(screen.getByRole('status')).toHaveTextContent('bad input');
+    expect(screen.getByText('Output')).toBeInTheDocument();
   });
 
-  it('renders an empty, but present, status region when not in an error state', () => {
-    render(<TextAreaOutput status="idle" content="" hint="hint" errorMessage={null} errorId="err" />);
+  it('renders the given actions alongside the label', () => {
+    render(<TextAreaOutput status="idle" content="" hint="hint" label="Output" actions={<button>Copy</button>} />);
 
-    expect(screen.getByRole('status')).toHaveTextContent('');
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
   });
 });

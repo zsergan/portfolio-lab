@@ -35,7 +35,6 @@ export function ColorField({ id, label, value, onChange }: ColorFieldProps) {
   }
 
   const isInvalid = !HEX_PATTERN.test(text);
-  const hintId = `${id}-hint`;
 
   return (
     <div className={styles.field}>
@@ -49,12 +48,15 @@ export function ColorField({ id, label, value, onChange }: ColorFieldProps) {
           className={styles.swatch}
         />
         <div className={styles.hexField}>
-          <Input id={id} value={text} onChange={handleTextChange} isInvalid={isInvalid} maxLength={7} describedBy={hintId} />
+          <Input
+            id={id}
+            value={text}
+            onChange={handleTextChange}
+            error={isInvalid ? 'Enter a 6-digit hex color, like #aa3bff.' : null}
+            maxLength={7}
+          />
         </div>
       </div>
-      <p id={hintId} role="status" className={styles.hint}>
-        {isInvalid ? 'Enter a 6-digit hex color, like #aa3bff.' : null}
-      </p>
     </div>
   );
 }
