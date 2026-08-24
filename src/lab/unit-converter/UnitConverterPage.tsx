@@ -39,7 +39,9 @@ export function UnitConverterPage() {
           <Select id="unit-converter-from" label="From" value={from} onChange={setFrom} options={unitOptions} />
         </div>
 
-        <Button onClick={swap}>Swap</Button>
+        <Button onClick={swap} ariaLabel="Swap" className={styles.swapButton}>
+          ⇄
+        </Button>
 
         <div className={styles.unitField}>
           <Select id="unit-converter-to" label="To" value={to} onChange={setTo} options={unitOptions} />

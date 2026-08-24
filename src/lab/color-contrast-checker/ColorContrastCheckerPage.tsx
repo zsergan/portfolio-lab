@@ -33,9 +33,12 @@ export function ColorContrastCheckerPage() {
 
       <div className={styles.fields}>
         <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
-        <ColorField id="background" label="Background" value={background} onChange={setBackground} />
 
-        <Button onClick={handleSwap}>Swap</Button>
+        <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
+          ⇄
+        </Button>
+
+        <ColorField id="background" label="Background" value={background} onChange={setBackground} />
       </div>
 
       <div className={styles.result}>

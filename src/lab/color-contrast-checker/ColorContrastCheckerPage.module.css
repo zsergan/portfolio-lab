@@ -1,9 +1,20 @@
 .fields {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 32px;
+}
+
+/* Offsets the button past each ColorField's label row, so it lines up
+   with the swatch/hex row instead of the top of the whole field column. */
+.swapButton {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-top: 28px;
+  padding: 0;
+  font-size: var(--text-lg);
 }
 
 .result {
