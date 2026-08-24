@@ -26,4 +26,24 @@ describe('Button', () => {
 
     expect(onClick).not.toHaveBeenCalled();
   });
+
+  it('exposes the given accessible name when children are not plain text', () => {
+    render(
+      <Button onClick={vi.fn()} ariaLabel="Swap">
+        ⇄
+      </Button>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Swap' })).toBeInTheDocument();
+  });
+
+  it('merges an extra className onto its own', () => {
+    render(
+      <Button onClick={vi.fn()} className="square">
+        Click me
+      </Button>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Click me' })).toHaveClass('square');
+  });
 });

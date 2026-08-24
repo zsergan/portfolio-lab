@@ -1,15 +1,15 @@
 import type { ReactNode } from 'react';
 
-import styles from './Caption.module.css';
+import styles from './Label.module.css';
 
-interface CaptionProps {
+interface LabelProps {
   children: ReactNode;
   htmlFor?: string;
   className?: string;
 }
 
-export function Caption({ children, htmlFor, className }: CaptionProps) {
-  const combined = className ? `${styles.caption} ${className}` : styles.caption;
+export function Label({ children, htmlFor, className }: LabelProps) {
+  const combined = className ? `${styles.label} ${className}` : styles.label;
 
   if (htmlFor) {
     return (

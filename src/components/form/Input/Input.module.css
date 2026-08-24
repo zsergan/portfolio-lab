@@ -1,3 +1,17 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.error {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+}
+
 .input {
   box-sizing: border-box;
   width: 100%;

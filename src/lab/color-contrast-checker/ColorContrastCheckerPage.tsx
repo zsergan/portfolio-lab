@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { ColorField } from './ColorField';
 import { getContrastRatio } from './contrastRatio';
-import { BackLink, Button, Description } from '@/components';
+import { BackLink, Button, ColorField, Description } from '@/components';
 
 import styles from './ColorContrastCheckerPage.module.css';
 
@@ -34,9 +33,12 @@ export function ColorContrastCheckerPage() {
 
       <div className={styles.fields}>
         <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
-        <ColorField id="background" label="Background" value={background} onChange={setBackground} />
 
-        <Button onClick={handleSwap}>Swap</Button>
+        <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
+          ⇄
+        </Button>
+
+        <ColorField id="background" label="Background" value={background} onChange={setBackground} />
       </div>
 
       <div className={styles.result}>

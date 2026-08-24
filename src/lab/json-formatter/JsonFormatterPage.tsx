@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useJsonFormat } from './hooks/useJsonFormat';
-import { BackLink, Button, Caption, Description, TextArea, TextAreaOutput, Toggle } from '@/components';
+import { BackLink, Button, Description, TextArea, TextAreaOutput, Toggle } from '@/components';
 import { useCopyToClipboard } from '@/hooks';
 
 import styles from './JsonFormatterPage.module.css';
@@ -9,7 +9,6 @@ import styles from './JsonFormatterPage.module.css';
 type Mode = 'pretty' | 'minify';
 
 const INPUT_ID = 'json-formatter-input';
-const ERROR_ID = 'json-formatter-error';
 
 export function JsonFormatterPage() {
   const [input, setInput] = useState('');
@@ -32,24 +31,21 @@ export function JsonFormatterPage() {
       <Description>Pretty-print, minify, and validate JSON with inline error feedback.</Description>
 
       <div className={styles.workspace}>
-        <div className={styles.panel}>
-          <div className={styles.panelHeader}>
-            <Caption htmlFor={INPUT_ID}>Input</Caption>
-          </div>
-          <TextArea
-            id={INPUT_ID}
-            value={input}
-            onChange={setInput}
-            isInvalid={state.status === 'error'}
-            placeholder='{"hello": "world"}'
-            describedBy={state.status === 'error' ? ERROR_ID : undefined}
-          />
-        </div>
+        <TextArea
+          id={INPUT_ID}
+          label="Input"
+          value={input}
+          onChange={setInput}
+          error={state.status === 'error' ? state.message : null}
+          placeholder='{"hello": "world"}'
+        />
 
-        <div className={styles.panel}>
-          <div className={styles.panelHeader}>
-            <Caption>Output</Caption>
-
+        <TextAreaOutput
+          label="Output"
+          status={state.status}
+          content={output}
+          hint="Paste or type JSON on the left to see it validated and formatted here."
+          actions={
             <div className={styles.toolbar}>
               <Toggle
                 options={[
@@ -68,16 +64,8 @@ export function JsonFormatterPage() {
 
               <Button onClick={handleClear}>Clear</Button>
             </div>
-          </div>
-
-          <TextAreaOutput
-            status={state.status}
-            content={output}
-            hint="Paste or type JSON on the left to see it validated and formatted here."
-            errorMessage={state.status === 'error' ? state.message : null}
-            errorId={ERROR_ID}
-          />
-        </div>
+          }
+        />
       </div>
     </div>
   );

@@ -31,4 +31,10 @@ describe('Select', () => {
 
     expect(screen.getByRole('combobox')).toHaveValue('kilometer');
   });
+
+  it('renders a label wired to the select when given', () => {
+    render(<Select id="test-select" value="meter" onChange={vi.fn()} options={OPTIONS} label="From" />);
+
+    expect(screen.getByLabelText('From')).toBeInTheDocument();
+  });
 });

@@ -1,10 +1,8 @@
 import type { UnitCategory } from './converter';
 import { useUnitConverter } from './hooks/useUnitConverter';
-import { BackLink, Button, Caption, Description, Input, Select, Toggle } from '@/components';
+import { BackLink, Button, Description, Input, Select, Toggle } from '@/components';
 
 import styles from './UnitConverterPage.module.css';
-
-const HINT_ID = 'unit-converter-hint';
 
 const CATEGORY_OPTIONS: { value: UnitCategory; label: string }[] = [
   { value: 'length', label: 'Length' },
@@ -26,44 +24,32 @@ export function UnitConverterPage() {
       <Toggle options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />
 
       <div className={styles.row}>
-        <div className={`${styles.field} ${styles.amountField}`}>
-          <Caption htmlFor="unit-converter-value">Amount</Caption>
+        <div className={styles.amountField}>
           <Input
             id="unit-converter-value"
             type="number"
+            label="Amount"
             value={value}
             onChange={setValue}
-            isInvalid={result === null}
-            describedBy={result === null ? HINT_ID : undefined}
+            error={result === null ? 'Enter a number to convert.' : null}
           />
         </div>
 
-        <div className={`${styles.field} ${styles.unitField}`}>
-          <Caption htmlFor="unit-converter-from">From</Caption>
-          <Select id="unit-converter-from" value={from} onChange={setFrom} options={unitOptions} />
+        <div className={styles.unitField}>
+          <Select id="unit-converter-from" label="From" value={from} onChange={setFrom} options={unitOptions} />
         </div>
 
-        <Button onClick={swap}>Swap</Button>
+        <Button onClick={swap} ariaLabel="Swap" className={styles.swapButton}>
+          ⇄
+        </Button>
 
-        <div className={`${styles.field} ${styles.unitField}`}>
-          <Caption htmlFor="unit-converter-to">To</Caption>
-          <Select id="unit-converter-to" value={to} onChange={setTo} options={unitOptions} />
+        <div className={styles.unitField}>
+          <Select id="unit-converter-to" label="To" value={to} onChange={setTo} options={unitOptions} />
         </div>
       </div>
 
       <div className={styles.result}>
-        {/* Two permanently-mounted elements (not a ternary swapping which
-            one exists) sharing one grid cell, so the role="status" node is
-            already present in the DOM before the invalid transition
-            happens — required for assistive tech to reliably pick up the
-            change; adding role="status" to a freshly-mounted node in the
-            same update that also sets its text isn't guaranteed to
-            announce. Only its own text (not the numeric result) changes,
-            so it doesn't re-announce on every keystroke of a valid number. */}
         <p className={styles.resultValue}>{result ? `${result.value} ${result.label}` : null}</p>
-        <p id={HINT_ID} role="status" className={styles.resultValue}>
-          {result ? null : 'Enter a number to convert.'}
-        </p>
       </div>
     </div>
   );
