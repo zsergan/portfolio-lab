@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Caption } from '@/components';
+import { Caption, Input } from '@/components';
 
 import styles from './ColorField.module.css';
 
@@ -47,17 +47,9 @@ export function ColorField({ id, label, value, onChange }: ColorFieldProps) {
           aria-label={`${label} color picker`}
           className={styles.swatch}
         />
-        <input
-          id={id}
-          type="text"
-          value={text}
-          onChange={(e) => handleTextChange(e.target.value)}
-          spellCheck={false}
-          maxLength={7}
-          aria-invalid={isInvalid}
-          aria-describedby={hintId}
-          className={styles.hexInput}
-        />
+        <div className={styles.hexField}>
+          <Input id={id} value={text} onChange={handleTextChange} isInvalid={isInvalid} maxLength={7} describedBy={hintId} />
+        </div>
       </div>
       <p id={hintId} role="status" className={styles.hint}>
         {isInvalid ? 'Enter a 6-digit hex color, like #aa3bff.' : null}

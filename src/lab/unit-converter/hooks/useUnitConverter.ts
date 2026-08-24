@@ -40,6 +40,14 @@ interface UseUnitConverterResult {
   swap: () => void;
 }
 
+// Unlike useJsonFormat (a pure derivation: the page owns `input`, the hook
+// only useMemo's a transform of it), this hook owns its state directly —
+// closer to useCopyToClipboard's shape. category/from/to have a
+// correlation invariant (see ConverterSelection in converter.ts) that has
+// to live somewhere; keeping it here, rather than in the page, is the
+// whole point of the extraction — pushing it back out to page-owned
+// useState calls would just relocate the discriminated-union/switch/cast
+// machinery into UnitConverterPage.tsx instead of hiding it.
 export function useUnitConverter(): UseUnitConverterResult {
   // A single discriminated-union state (rather than separate category/
   // from/to useState calls) so TypeScript narrows from/to together with

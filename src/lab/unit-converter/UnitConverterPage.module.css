@@ -21,13 +21,17 @@
 }
 
 .result {
+  display: grid;
   padding: 24px 32px;
   border: 1px solid var(--border);
   border-radius: 8px;
   max-width: 480px;
 }
 
+/* Both children of .result share this grid cell (see UnitConverterPage.tsx)
+   so only one is ever visibly showing text, even though both stay mounted. */
 .resultValue {
+  grid-area: 1 / 1;
   margin: 0;
   font-family: var(--sans);
   font-size: var(--text-display);

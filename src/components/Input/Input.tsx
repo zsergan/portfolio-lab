@@ -8,9 +8,10 @@ interface InputProps {
   isInvalid: boolean;
   placeholder?: string;
   describedBy?: string;
+  maxLength?: number;
 }
 
-export function Input({ id, value, onChange, type = 'text', isInvalid, placeholder, describedBy }: InputProps) {
+export function Input({ id, value, onChange, type = 'text', isInvalid, placeholder, describedBy, maxLength }: InputProps) {
   return (
     <input
       id={id}
@@ -19,6 +20,7 @@ export function Input({ id, value, onChange, type = 'text', isInvalid, placehold
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
+      maxLength={maxLength}
       spellCheck={false}
       aria-invalid={isInvalid}
       aria-describedby={describedBy}

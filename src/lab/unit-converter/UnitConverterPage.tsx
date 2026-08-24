@@ -52,15 +52,18 @@ export function UnitConverterPage() {
       </div>
 
       <div className={styles.result}>
-        {result ? (
-          <p id={HINT_ID} className={styles.resultValue}>
-            {result.value} {result.label}
-          </p>
-        ) : (
-          <p id={HINT_ID} role="status" className={styles.resultValue}>
-            Enter a number to convert.
-          </p>
-        )}
+        {/* Two permanently-mounted elements (not a ternary swapping which
+            one exists) sharing one grid cell, so the role="status" node is
+            already present in the DOM before the invalid transition
+            happens — required for assistive tech to reliably pick up the
+            change; adding role="status" to a freshly-mounted node in the
+            same update that also sets its text isn't guaranteed to
+            announce. Only its own text (not the numeric result) changes,
+            so it doesn't re-announce on every keystroke of a valid number. */}
+        <p className={styles.resultValue}>{result ? `${result.value} ${result.label}` : null}</p>
+        <p id={HINT_ID} role="status" className={styles.resultValue}>
+          {result ? null : 'Enter a number to convert.'}
+        </p>
       </div>
     </div>
   );

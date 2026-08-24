@@ -99,6 +99,11 @@ export type ConverterSelection = {
 }[UnitCategory];
 
 export function convertSelection(selection: ConverterSelection, value: number): number {
+  // The three branches look identical — do not collapse them into a single
+  // `return convert(value, selection.from, selection.to)` outside the
+  // switch. Only the per-case narrowing gives `selection.from`/`.to` a
+  // single, matching Unit<C>; outside the switch they widen back to the
+  // full union and CategoryOf<F> stops rejecting cross-category pairs.
   switch (selection.category) {
     case 'length':
       return convert(value, selection.from, selection.to);
