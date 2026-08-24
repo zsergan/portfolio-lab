@@ -1,9 +1,10 @@
 export { BackLink } from './BackLink/BackLink';
 export { Button } from './Button/Button';
-export { Caption } from './typography/Caption/Caption';
+export { ColorField } from './form/ColorField/ColorField';
 export { Description } from './typography/Description/Description';
 export { Eyebrow } from './typography/Eyebrow/Eyebrow';
 export { Input } from './form/Input/Input';
+export { Label } from './form/Label/Label';
 export { QueryBoundary } from './QueryBoundary/QueryBoundary';
 export { Select } from './form/Select/Select';
 export { Skeleton } from './Skeleton/Skeleton';

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Caption, Input } from '@/components';
+import { Input } from '../Input/Input';
+import { Label } from '../Label/Label';
 
 import styles from './ColorField.module.css';
 
@@ -38,7 +39,7 @@ export function ColorField({ id, label, value, onChange }: ColorFieldProps) {
 
   return (
     <div className={styles.field}>
-      <Caption htmlFor={id}>{label}</Caption>
+      <Label htmlFor={id}>{label}</Label>
       <div className={styles.controls}>
         <input
           type="color"

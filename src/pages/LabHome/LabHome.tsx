@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { Caption, Description, TagList } from '@/components';
+import { Description, Label, TagList } from '@/components';
 import { labTools } from '@/lab/registry';
 
 import styles from './LabHome.module.css';
@@ -30,7 +30,7 @@ export function LabHome() {
                 <span className={styles.cardTitle}>{tool.title}</span>
                 <span className={styles.cardDescription}>{tool.description}</span>
                 {tool.topics && <TagList tags={tool.topics} />}
-                <Caption className={styles.cardBadge}>planned</Caption>
+                <Label className={styles.cardBadge}>planned</Label>
               </div>
             )}
           </li>

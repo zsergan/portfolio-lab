@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
-import { ColorField } from './ColorField';
 import { getContrastRatio } from './contrastRatio';
-import { BackLink, Button, Description } from '@/components';
+import { BackLink, Button, ColorField, Description } from '@/components';
 
 import styles from './ColorContrastCheckerPage.module.css';
 

@@ -1,6 +1,6 @@
 import type { UnitCategory } from './converter';
 import { useUnitConverter } from './hooks/useUnitConverter';
-import { BackLink, Button, Caption, Description, Input, Select, Toggle } from '@/components';
+import { BackLink, Button, Description, Input, Label, Select, Toggle } from '@/components';
 
 import styles from './UnitConverterPage.module.css';
 
@@ -27,7 +27,7 @@ export function UnitConverterPage() {
 
       <div className={styles.row}>
         <div className={`${styles.field} ${styles.amountField}`}>
-          <Caption htmlFor="unit-converter-value">Amount</Caption>
+          <Label htmlFor="unit-converter-value">Amount</Label>
           <Input
             id="unit-converter-value"
             type="number"
@@ -39,14 +39,14 @@ export function UnitConverterPage() {
         </div>
 
         <div className={`${styles.field} ${styles.unitField}`}>
-          <Caption htmlFor="unit-converter-from">From</Caption>
+          <Label htmlFor="unit-converter-from">From</Label>
           <Select id="unit-converter-from" value={from} onChange={setFrom} options={unitOptions} />
         </div>
 
         <Button onClick={swap}>Swap</Button>
 
         <div className={`${styles.field} ${styles.unitField}`}>
-          <Caption htmlFor="unit-converter-to">To</Caption>
+          <Label htmlFor="unit-converter-to">To</Label>
           <Select id="unit-converter-to" value={to} onChange={setTo} options={unitOptions} />
         </div>
       </div>

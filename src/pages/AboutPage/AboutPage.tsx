@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { AboutPageSkeleton } from './AboutPageSkeleton';
-import { Caption, Eyebrow, QueryBoundary } from '@/components';
+import { Eyebrow, Label, QueryBoundary } from '@/components';
 import { fetchAbout } from '@/content/api';
 
 import styles from './AboutPage.module.css';
@@ -33,7 +33,7 @@ export function AboutPage() {
               {data.stats.map((stat) => (
                 <li key={stat.label} className={styles.stat}>
                   <span className={styles.statValue}>{stat.value}</span>
-                  <Caption>{stat.label}</Caption>
+                  <Label>{stat.label}</Label>
                 </li>
               ))}
             </ul>
