@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { getContrastRatio } from './contrastRatio';
 import { BackLink, Button, ColorField, Description } from '@/components';
+import { SwapIcon } from '@/icons';
 
 import styles from './ColorContrastCheckerPage.module.css';
 
@@ -31,32 +32,35 @@ export function ColorContrastCheckerPage() {
       <h2>Color Contrast Checker</h2>
       <Description>Compare two colors against WCAG AA/AAA contrast ratio thresholds.</Description>
 
-      <div className={styles.fields}>
-        <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
+      <div className={styles.container}>
+        <div className={styles.fields}>
+          <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
 
-        <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
-          ⇄
-        </Button>
+          <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
+            <SwapIcon />
+          </Button>
 
-        <ColorField id="background" label="Background" value={background} onChange={setBackground} />
-      </div>
+          <ColorField id="background" label="Background" value={background} onChange={setBackground} />
+        </div>
 
-      <div className={styles.result}>
-        <p className={styles.preview} style={{ color: foreground, background }}>
-          The quick brown fox jumps over the lazy dog.
-        </p>
+        <div className={styles.result}>
+          <p className={styles.preview} style={{ color: foreground, background }}>
+            The quick brown fox jumps over the lazy dog.
+          </p>
 
-        <p className={styles.ratio}>{ratio.toFixed(2)}:1</p>
+          <p className={styles.ratio}>{ratio.toFixed(2)}:1</p>
 
-        <ul className={styles.checks}>
-          <li>
-            AA (4.5:1): <strong className={passesAA ? styles.pass : styles.fail}>{passesAA ? 'Pass' : 'Fail'}</strong>
-          </li>
-          <li>
-            AAA (7:1):{' '}
-            <strong className={passesAAA ? styles.pass : styles.fail}>{passesAAA ? 'Pass' : 'Fail'}</strong>
-          </li>
-        </ul>
+          <ul className={styles.checks}>
+            <li>
+              AA (4.5:1):{' '}
+              <strong className={passesAA ? styles.pass : styles.fail}>{passesAA ? 'Pass' : 'Fail'}</strong>
+            </li>
+            <li>
+              AAA (7:1):{' '}
+              <strong className={passesAAA ? styles.pass : styles.fail}>{passesAAA ? 'Pass' : 'Fail'}</strong>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );
