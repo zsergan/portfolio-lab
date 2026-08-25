@@ -8,8 +8,25 @@
   }
 }
 
+/* Matches Output's header height (below) so the Input/Output textareas
+   start at the same y — Output's header is taller than a bare label
+   because it also holds the Pretty/Minify/Copy/Clear toolbar. */
+.inputLabel {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.outputHeader {
+  min-height: 36px;
+}
+
 .toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.copyButton {
+  min-width: 68px;
 }

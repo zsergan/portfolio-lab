@@ -10,13 +10,16 @@ interface TextAreaOutputProps {
   hint: ReactNode;
   label?: string;
   actions?: ReactNode;
+  headerClassName?: string;
 }
 
-export function TextAreaOutput({ status, content, hint, label, actions }: TextAreaOutputProps) {
+export function TextAreaOutput({ status, content, hint, label, actions, headerClassName }: TextAreaOutputProps) {
+  const headerClasses = headerClassName ? `${styles.header} ${headerClassName}` : styles.header;
+
   return (
     <div className={styles.field}>
       {(label || actions) && (
-        <div className={styles.header}>
+        <div className={headerClasses}>
           {label && <Label>{label}</Label>}
           {actions}
         </div>
