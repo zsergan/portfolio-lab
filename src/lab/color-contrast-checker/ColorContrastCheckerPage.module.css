@@ -1,27 +1,48 @@
+/* Shared max-width so .fields and .result share the same right edge
+   by construction, instead of only lining up when their content widths
+   happen to match. Wide enough that the two ColorFields + swap button
+   never wrap at their natural width (2 * 208px fields + 40px button +
+   2 * 16px gaps = 488px). */
+.container {
+  max-width: 520px;
+}
+
 .fields {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  flex-wrap: wrap;
   margin-bottom: 32px;
 }
 
 /* Offsets the button past each ColorField's label row, so it lines up
    with the swatch/hex row instead of the top of the whole field column. */
 .swapButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  margin-top: 28px;
+  margin-top: 26px;
   padding: 0;
-  font-size: var(--text-lg);
+}
+
+@media (max-width: 480px) {
+  .fields {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .swapButton {
+    align-self: center;
+    margin-top: 0;
+  }
 }
 
 .result {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 480px;
 }
 
 .preview {

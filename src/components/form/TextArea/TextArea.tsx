@@ -7,16 +7,21 @@ interface TextAreaProps {
   value: string;
   onChange: (value: string) => void;
   label?: string;
+  labelClassName?: string;
   error?: string | null;
   placeholder?: string;
 }
 
-export function TextArea({ id, value, onChange, label, error, placeholder }: TextAreaProps) {
+export function TextArea({ id, value, onChange, label, labelClassName, error, placeholder }: TextAreaProps) {
   const errorId = `${id}-error`;
 
   return (
     <div className={styles.field}>
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {label && (
+        <Label htmlFor={id} className={labelClassName}>
+          {label}
+        </Label>
+      )}
       <textarea
         id={id}
         className={styles.textarea}

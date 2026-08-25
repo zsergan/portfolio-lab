@@ -103,6 +103,20 @@
   }
 }
 
+/* At narrow phone widths, About/Experience/Contact/Lab at their normal
+   gap/padding are a few px wider than the viewport even after wrapping
+   below the title — tightening both here keeps the row inside the
+   viewport instead of causing a persistent horizontal scroll. */
+@media (max-width: 420px) {
+  .nav {
+    gap: 8px;
+  }
+
+  .navLink {
+    padding: 8px 10px;
+  }
+}
+
 .main {
   flex: 1;
   width: 100%;

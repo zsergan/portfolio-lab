@@ -17,7 +17,7 @@ describe('UnitConverterPage', () => {
   it('converts 1000 meters to 1 kilometer by default', () => {
     renderPage();
 
-    expect(screen.getByText('1 Kilometers')).toBeInTheDocument();
+    expect(screen.getByLabelText('Converted')).toHaveValue(1);
   });
 
   it('switches category, resetting to that category\'s defaults', async () => {
@@ -25,19 +25,31 @@ describe('UnitConverterPage', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Temperature' }));
 
-    expect(screen.getByText('32 Fahrenheit')).toBeInTheDocument();
+    expect(screen.getByLabelText('Converted')).toHaveValue(32);
   });
 
-  it('swaps the from/to units', async () => {
+  it('swaps the from/to units and the amount/converted values together', async () => {
     renderPage();
 
     await userEvent.click(screen.getByRole('button', { name: 'Swap' }));
 
     expect(screen.getByLabelText('From')).toHaveValue('kilometer');
     expect(screen.getByLabelText('To')).toHaveValue('meter');
+    expect(screen.getByLabelText('Amount')).toHaveValue(1);
+    expect(screen.getByLabelText('Converted')).toHaveValue(1000);
   });
 
-  it('shows a hint instead of a stale result when the input is empty', async () => {
+  it('editing the Converted field back-computes Amount', async () => {
+    renderPage();
+
+    const result = screen.getByLabelText('Converted');
+    await userEvent.clear(result);
+    await userEvent.type(result, '2');
+
+    expect(screen.getByLabelText('Amount')).toHaveValue(2000);
+  });
+
+  it('shows a hint instead of a stale result when Amount is emptied', async () => {
     renderPage();
 
     const amount = screen.getByLabelText('Amount');
@@ -47,6 +59,20 @@ describe('UnitConverterPage', () => {
     expect(hint).toBeInTheDocument();
     expect(amount).toHaveAttribute('aria-invalid', 'true');
     expect(amount).toHaveAttribute('aria-describedby', hint.id);
+    expect(screen.getByLabelText('Converted')).toHaveValue(null);
+  });
+
+  it('shows a hint instead of a stale amount when Converted is emptied', async () => {
+    renderPage();
+
+    const result = screen.getByLabelText('Converted');
+    await userEvent.clear(result);
+
+    const hint = screen.getByText('Enter a number to convert.');
+    expect(hint).toBeInTheDocument();
+    expect(result).toHaveAttribute('aria-invalid', 'true');
+    expect(result).toHaveAttribute('aria-describedby', hint.id);
+    expect(screen.getByLabelText('Amount')).toHaveValue(null);
   });
 
   it('rejects non-numeric characters, leaving the field effectively empty', async () => {

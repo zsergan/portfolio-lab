@@ -34,6 +34,7 @@ export function JsonFormatterPage() {
         <TextArea
           id={INPUT_ID}
           label="Input"
+          labelClassName={styles.inputLabel}
           value={input}
           onChange={setInput}
           error={state.status === 'error' ? state.message : null}
@@ -42,6 +43,7 @@ export function JsonFormatterPage() {
 
         <TextAreaOutput
           label="Output"
+          headerClassName={styles.outputHeader}
           status={state.status}
           content={output}
           hint="Paste or type JSON on the left to see it validated and formatted here."
@@ -57,7 +59,11 @@ export function JsonFormatterPage() {
               />
 
               <span role="status" aria-label="Copy status">
-                <Button onClick={() => copy(output)} disabled={state.status !== 'valid'}>
+                <Button
+                  onClick={() => copy(output)}
+                  disabled={state.status !== 'valid'}
+                  className={styles.copyButton}
+                >
                   {copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy'}
                 </Button>
               </span>
