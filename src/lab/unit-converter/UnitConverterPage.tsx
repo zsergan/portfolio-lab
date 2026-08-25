@@ -1,6 +1,7 @@
 import type { UnitCategory } from './converter';
 import { useUnitConverter } from './hooks/useUnitConverter';
 import { BackLink, Button, Description, Input, Select, Toggle } from '@/components';
+import { SwapIcon } from '@/icons';
 
 import styles from './UnitConverterPage.module.css';
 
@@ -11,8 +12,22 @@ const CATEGORY_OPTIONS: { value: UnitCategory; label: string }[] = [
 ];
 
 export function UnitConverterPage() {
-  const { category, value, from, to, unitOptions, result, setCategory, setValue, setFrom, setTo, swap } =
-    useUnitConverter();
+  const {
+    category,
+    from,
+    to,
+    unitOptions,
+    amount,
+    result,
+    amountError,
+    resultError,
+    setCategory,
+    setAmount,
+    setResult,
+    setFrom,
+    setTo,
+    swap,
+  } = useUnitConverter();
 
   return (
     <div>
@@ -23,33 +38,40 @@ export function UnitConverterPage() {
 
       <Toggle options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />
 
-      <div className={styles.row}>
-        <div className={styles.amountField}>
-          <Input
-            id="unit-converter-value"
-            type="number"
-            label="Amount"
-            value={value}
-            onChange={setValue}
-            error={result === null ? 'Enter a number to convert.' : null}
-          />
-        </div>
-
-        <div className={styles.unitField}>
+      <div className={styles.grid}>
+        <div className={styles.fromField}>
           <Select id="unit-converter-from" label="From" value={from} onChange={setFrom} options={unitOptions} />
         </div>
 
-        <Button onClick={swap} ariaLabel="Swap" className={styles.swapButton}>
-          ⇄
-        </Button>
-
-        <div className={styles.unitField}>
+        <div className={styles.toField}>
           <Select id="unit-converter-to" label="To" value={to} onChange={setTo} options={unitOptions} />
         </div>
-      </div>
 
-      <div className={styles.result}>
-        <p className={styles.resultValue}>{result ? `${result.value} ${result.label}` : null}</p>
+        <Button onClick={swap} ariaLabel="Swap" className={styles.swapButton}>
+          <SwapIcon />
+        </Button>
+
+        <div className={styles.amountField}>
+          <Input
+            id="unit-converter-amount"
+            type="number"
+            label="Amount"
+            value={amount}
+            onChange={setAmount}
+            error={amountError}
+          />
+        </div>
+
+        <div className={styles.resultField}>
+          <Input
+            id="unit-converter-result"
+            type="number"
+            label="Converted"
+            value={result}
+            onChange={setResult}
+            error={resultError}
+          />
+        </div>
       </div>
     </div>
   );

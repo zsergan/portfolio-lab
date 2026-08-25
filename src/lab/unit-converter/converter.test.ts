@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { convert, getUnitLabels } from './converter';
+import { convert, convertSelection, convertSelectionReverse, getUnitLabels } from './converter';
 
 describe('convert', () => {
   it('converts length units via the shared meter base unit', () => {
@@ -29,6 +29,22 @@ describe('convert', () => {
 
   it('is a no-op when converting a unit to itself', () => {
     expect(convert(42, 'kilogram', 'kilogram')).toBe(42);
+  });
+});
+
+describe('convertSelectionReverse', () => {
+  it('is the inverse of convertSelection for the same selection', () => {
+    const selection = { category: 'length', from: 'meter', to: 'kilometer' } as const;
+
+    const forward = convertSelection(selection, 1000);
+    expect(forward).toBeCloseTo(1, 10);
+    expect(convertSelectionReverse(selection, forward)).toBeCloseTo(1000, 10);
+  });
+
+  it('accounts for temperature\'s offset, not just its scale', () => {
+    const selection = { category: 'temperature', from: 'celsius', to: 'fahrenheit' } as const;
+
+    expect(convertSelectionReverse(selection, 32)).toBeCloseTo(0, 10);
   });
 });
 

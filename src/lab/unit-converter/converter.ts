@@ -114,6 +114,21 @@ export function convertSelection(selection: ConverterSelection, value: number): 
   }
 }
 
+// Mirrors convertSelection with `from`/`to` swapped, for the Unit Converter
+// tool's editable "Converted" field: typing a value there needs to derive
+// the Amount field by converting back from `to` to `from`. Same per-case
+// narrowing requirement as convertSelection above.
+export function convertSelectionReverse(selection: ConverterSelection, value: number): number {
+  switch (selection.category) {
+    case 'length':
+      return convert(value, selection.to, selection.from);
+    case 'weight':
+      return convert(value, selection.to, selection.from);
+    case 'temperature':
+      return convert(value, selection.to, selection.from);
+  }
+}
+
 export function getUnitLabels<C extends UnitCategory>(category: C): Record<Unit<C>, string> {
   const units = unitsByCategory[category] as Record<Unit<C>, UnitConfig>;
   const labels = {} as Record<Unit<C>, string>;
