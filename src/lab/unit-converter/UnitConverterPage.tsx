@@ -1,6 +1,6 @@
 import type { UnitCategory } from './converter';
 import { useUnitConverter } from './hooks/useUnitConverter';
-import { BackLink, Button, Description, Input, Select, Toggle } from '@/components';
+import { Breadcrumbs, Button, Input, Select, Toggle, ToolIntro } from '@/components';
 import { SwapIcon } from '@/icons';
 
 import styles from './UnitConverterPage.module.css';
@@ -31,10 +31,8 @@ export function UnitConverterPage() {
 
   return (
     <div>
-      <BackLink to="/lab">Back to Lab</BackLink>
-
-      <h2>Unit Converter</h2>
-      <Description>Convert between length, weight, and temperature units.</Description>
+      <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'unit-converter' }]} />
+      <ToolIntro toolId="unit-converter" />
 
       <Toggle options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />
 

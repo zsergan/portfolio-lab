@@ -4,5 +4,12 @@
   font-size: var(--text-xs);
   font-weight: var(--weight-regular);
   letter-spacing: 0.03em;
+}
+
+.accent {
   color: var(--accent);
+}
+
+.muted {
+  color: var(--text);
 }

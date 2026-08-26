@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ColorContrastCheckerPage } from './ColorContrastCheckerPage';
 
@@ -13,15 +13,22 @@ function renderPage() {
   );
 }
 
+beforeEach(() => {
+  Object.defineProperty(navigator, 'clipboard', {
+    value: { writeText: vi.fn().mockResolvedValue(undefined) },
+    configurable: true,
+  });
+});
+
 describe('ColorContrastCheckerPage', () => {
-  it('shows 21:1 and passes both AA and AAA for the default black-on-white pair', () => {
+  it('shows 9.97:1 and passes every WCAG check for the default color pair', () => {
     renderPage();
 
-    expect(screen.getByText('21.00:1')).toBeInTheDocument();
-    expect(screen.getAllByText('Pass')).toHaveLength(2);
+    expect(screen.getByText('9.97')).toBeInTheDocument();
+    expect(screen.getAllByText('pass')).toHaveLength(4);
   });
 
-  it('fails both AA and AAA for a low-contrast pair', async () => {
+  it('fails every WCAG check for a low-contrast pair', async () => {
     renderPage();
 
     const foreground = screen.getByLabelText('Foreground');
@@ -32,10 +39,10 @@ describe('ColorContrastCheckerPage', () => {
     await userEvent.clear(background);
     await userEvent.type(background, '#888888');
 
-    expect(screen.getAllByText('Fail')).toHaveLength(2);
+    expect(screen.getAllByText('fail')).toHaveLength(4);
   });
 
-  it('swaps foreground and background', async () => {
+  it('swaps foreground and background via the header action', async () => {
     renderPage();
 
     const foreground = screen.getByLabelText('Foreground');
@@ -44,7 +51,41 @@ describe('ColorContrastCheckerPage', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Swap' }));
 
-    expect(screen.getByLabelText('Foreground')).toHaveValue('#ffffff');
+    expect(screen.getByLabelText('Foreground')).toHaveValue('#f2eee4');
     expect(screen.getByLabelText('Background')).toHaveValue('#111111');
+  });
+
+  it('swaps foreground and background via the inline icon button', async () => {
+    renderPage();
+
+    const foreground = screen.getByLabelText('Foreground');
+    await userEvent.clear(foreground);
+    await userEvent.type(foreground, '#222222');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Swap colors' }));
+
+    expect(screen.getByLabelText('Foreground')).toHaveValue('#f2eee4');
+    expect(screen.getByLabelText('Background')).toHaveValue('#222222');
+  });
+
+  it('copies the color pair to the clipboard', async () => {
+    renderPage();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Copy pair' }));
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('#3d2f6b / #f2eee4');
+    expect(await screen.findByRole('button', { name: 'Copied' })).toBeInTheDocument();
+  });
+
+  it('offers 5 nearest passing shades and sets the foreground when one is clicked', async () => {
+    renderPage();
+
+    const shadeButtons = screen.getAllByRole('button', { name: /^Use #[0-9a-f]{6} as the foreground color/ });
+    expect(shadeButtons).toHaveLength(5);
+
+    const targetHex = shadeButtons[2].getAttribute('aria-label')!.match(/#[0-9a-f]{6}/)![0];
+    await userEvent.click(shadeButtons[2]);
+
+    expect(screen.getByLabelText('Foreground')).toHaveValue(targetHex);
   });
 });

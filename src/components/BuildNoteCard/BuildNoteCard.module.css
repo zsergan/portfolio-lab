@@ -1,0 +1,14 @@
+.card {
+  padding: 20px 22px;
+}
+
+.eyebrow {
+  margin-bottom: 0;
+}
+
+.text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}

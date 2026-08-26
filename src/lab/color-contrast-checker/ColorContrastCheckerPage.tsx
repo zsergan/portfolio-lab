@@ -1,65 +1,85 @@
 import { useState } from 'react';
 
-import { getContrastRatio } from './contrastRatio';
-import { BackLink, Button, ColorField, Description } from '@/components';
-import { SwapIcon } from '@/icons';
+import { ColorSwapFields } from './components/ColorSwapFields/ColorSwapFields';
+import { ContrastRatioDisplay } from './components/ContrastRatioDisplay/ContrastRatioDisplay';
+import { LiveSamplePreview } from './components/LiveSamplePreview/LiveSamplePreview';
+import { NearestPassingShades } from './components/NearestPassingShades/NearestPassingShades';
+import { WcagChecksGrid } from './components/WcagChecksGrid/WcagChecksGrid';
+import { getContrastRatio } from './utils/contrastRatio/contrastRatio';
+import { findNearestPassingShades } from './utils/nearestPassingShades/nearestPassingShades';
+import { Breadcrumbs, BuildNoteCard, NextToolCard, ShortcutsCard, ToolIntro, WorkspaceCard } from '@/components';
+import { useCopyToClipboard, useKeyboardShortcuts } from '@/hooks';
 
 import styles from './ColorContrastCheckerPage.module.css';
 
-const AA_THRESHOLD = 4.5;
-const AAA_THRESHOLD = 7;
-
 export function ColorContrastCheckerPage() {
-  const [foreground, setForeground] = useState('#000000');
-  const [background, setBackground] = useState('#ffffff');
+  const [foreground, setForeground] = useState('#3d2f6b');
+  const [background, setBackground] = useState('#f2eee4');
+  const { status: copyStatus, copy } = useCopyToClipboard();
 
-  // Round once and compare against the rounded figure, so the displayed
-  // ratio and the pass/fail verdict can never disagree (e.g. a true ratio
-  // of 4.495 must not show "4.50:1" next to "Fail").
   const ratio = Math.round(getContrastRatio(foreground, background) * 100) / 100;
-  const passesAA = ratio >= AA_THRESHOLD;
-  const passesAAA = ratio >= AAA_THRESHOLD;
+  const { shades, allPass } = findNearestPassingShades(foreground, background);
 
   function handleSwap() {
     setForeground(background);
     setBackground(foreground);
   }
 
+  function handleCopyPair() {
+    copy(`${foreground} / ${background}`);
+  }
+
+  const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy pair';
+
+  const shortcuts = [
+    { label: 'Swap colors', combo: 'mod+s', onTrigger: handleSwap },
+    { label: 'Copy pair', combo: 'mod+c', onTrigger: handleCopyPair },
+    { label: 'Use nearest shade', combo: 'n', onTrigger: () => setForeground(shades[0]) },
+  ];
+
+  useKeyboardShortcuts(shortcuts);
+
   return (
     <div>
-      <BackLink to="/lab">Back to Lab</BackLink>
+      <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'color-contrast-checker' }]} />
+      <ToolIntro toolId="color-contrast-checker" />
 
-      <h2>Color Contrast Checker</h2>
-      <Description>Compare two colors against WCAG AA/AAA contrast ratio thresholds.</Description>
+      <WorkspaceCard
+        filename="contrast.tsx"
+        actions={[
+          { label: 'Swap', onClick: handleSwap },
+          { label: copyLabel, onClick: handleCopyPair },
+        ]}
+      >
+        <div className={styles.body}>
+          <div className={styles.left}>
+            <ColorSwapFields
+              foreground={foreground}
+              background={background}
+              onForegroundChange={setForeground}
+              onBackgroundChange={setBackground}
+              onSwap={handleSwap}
+            />
 
-      <div className={styles.container}>
-        <div className={styles.fields}>
-          <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
+            <ContrastRatioDisplay ratio={ratio} />
 
-          <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
-            <SwapIcon />
-          </Button>
+            <WcagChecksGrid ratio={ratio} />
+          </div>
 
-          <ColorField id="background" label="Background" value={background} onChange={setBackground} />
+          <div className={styles.right}>
+            <LiveSamplePreview foreground={foreground} background={background} />
+
+            <NearestPassingShades shades={shades} allPass={allPass} onSelect={setForeground} />
+          </div>
         </div>
+      </WorkspaceCard>
 
-        <div className={styles.result}>
-          <p className={styles.preview} style={{ color: foreground, background }}>
-            The quick brown fox jumps over the lazy dog.
-          </p>
+      <div className={styles.bottomRow}>
+        <BuildNoteCard toolId="color-contrast-checker" />
 
-          <p className={styles.ratio}>{ratio.toFixed(2)}:1</p>
-
-          <ul className={styles.checks}>
-            <li>
-              AA (4.5:1):{' '}
-              <strong className={passesAA ? styles.pass : styles.fail}>{passesAA ? 'Pass' : 'Fail'}</strong>
-            </li>
-            <li>
-              AAA (7:1):{' '}
-              <strong className={passesAAA ? styles.pass : styles.fail}>{passesAAA ? 'Pass' : 'Fail'}</strong>
-            </li>
-          </ul>
+        <div className={styles.sidebar}>
+          <ShortcutsCard shortcuts={shortcuts} />
+          <NextToolCard currentToolId="color-contrast-checker" />
         </div>
       </div>
     </div>

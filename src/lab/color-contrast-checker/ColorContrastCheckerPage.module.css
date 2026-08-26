@@ -1,97 +1,50 @@
-/* Shared max-width so .fields and .result share the same right edge
-   by construction, instead of only lining up when their content widths
-   happen to match. Wide enough that the two ColorFields + swap button
-   never wrap at their natural width (2 * 208px fields + 40px button +
-   2 * 16px gaps = 488px). */
-.container {
-  max-width: 520px;
+.body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-.fields {
+.left {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border-right: 1px solid var(--border);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  margin-bottom: 32px;
+  padding: 20px;
+  background: var(--surface-subtle-2);
 }
 
-/* Offsets the button past each ColorField's label row, so it lines up
-   with the swatch/hex row instead of the top of the whole field column. */
-.swapButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+@media (max-width: 720px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
   margin-top: 26px;
-  padding: 0;
 }
 
-@media (max-width: 480px) {
-  .fields {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .swapButton {
-    align-self: center;
-    margin-top: 0;
-  }
-}
-
-.result {
+.sidebar {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.preview {
-  margin: 0;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: var(--text-lg);
-}
-
-.ratio {
-  margin: 0;
-  font-family: var(--sans);
-  font-size: var(--text-display);
-  font-weight: var(--weight-extrabold);
-  color: var(--text-h);
-  letter-spacing: -0.01em;
-}
-
-.checks {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-family: var(--mono);
-  font-size: var(--text-sm);
-  color: var(--text);
-}
-
-/* Both pass 4.5:1 against this site's own --bg in light and dark mode —
-   verified with the same formula this tool ships, so its own verdict
-   text doesn't fail the exact check it's performing. */
-.pass {
-  color: #15803d;
-}
-
-.fail {
-  color: #b91c1c;
-}
-
-@media (prefers-color-scheme: dark) {
-  .pass {
-    color: #4ade80;
-  }
-
-  .fail {
-    color: #f87171;
+@media (max-width: 720px) {
+  .bottomRow {
+    grid-template-columns: 1fr;
   }
 }

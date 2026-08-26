@@ -1,0 +1,30 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 26px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.link {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--accent);
+}
+
+/* var(--border) is calibrated for hairlines against var(--surface), not
+   text against the page's own var(--bg) — the two are close enough in
+   both themes that a border-colored slash all but disappears here. */
+.separator {
+  color: var(--text);
+  opacity: 0.45;
+}
+
+.current {
+  color: var(--text-h);
+}
