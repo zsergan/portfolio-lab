@@ -13,3 +13,4 @@ export { TagList } from './TagList/TagList';
 export { TextArea } from './form/TextArea/TextArea';
 export { TextAreaOutput } from './form/TextAreaOutput/TextAreaOutput';
 export { Toggle } from './form/Toggle/Toggle';
+export { WorkspaceCard } from './WorkspaceCard/WorkspaceCard';
