@@ -1,4 +1,5 @@
 import { Card } from '../Card/Card';
+import { Eyebrow } from '../typography/Eyebrow/Eyebrow';
 
 import styles from './ShortcutsCard.module.css';
 
@@ -33,7 +34,9 @@ export function ShortcutsCard({ shortcuts }: ShortcutsCardProps) {
 
   return (
     <Card className={styles.card}>
-      <span className={styles.label}>// shortcuts</span>
+      <Eyebrow variant="muted" className={styles.eyebrow}>
+        shortcuts
+      </Eyebrow>
 
       <ul className={styles.list}>
         {shortcuts.map((shortcut) => (

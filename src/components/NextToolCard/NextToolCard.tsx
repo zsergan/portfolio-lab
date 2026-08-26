@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 
 import { Card } from '../Card/Card';
+import { Eyebrow } from '../typography/Eyebrow/Eyebrow';
 import { getToolNumber, labTools } from '@/lab/registry';
 
 import styles from './NextToolCard.module.css';
@@ -24,7 +25,9 @@ export function NextToolCard({ currentToolId }: NextToolCardProps) {
 
   return (
     <Card className={styles.card}>
-      <span className={styles.label}>// next tool</span>
+      <Eyebrow variant="muted" className={styles.eyebrow}>
+        next tool
+      </Eyebrow>
 
       <ul className={styles.list}>
         {nextTools.map((tool) => (
