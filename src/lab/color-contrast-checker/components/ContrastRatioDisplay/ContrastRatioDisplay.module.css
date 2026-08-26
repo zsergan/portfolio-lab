@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 9px;
 }
 
 .ratio {
@@ -15,8 +15,9 @@
   font-family: var(--sans);
   font-size: var(--text-display);
   font-weight: var(--weight-extrabold);
+  line-height: 1;
   color: var(--text-h);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
 
 .ratioSuffix {
@@ -28,14 +29,14 @@
 .scale {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 9px;
 }
 
 .scaleTrack {
   position: relative;
   height: 8px;
   border-radius: 4px;
-  background: var(--surface-subtle);
+  background: var(--code-bg);
   overflow: hidden;
 }
 
