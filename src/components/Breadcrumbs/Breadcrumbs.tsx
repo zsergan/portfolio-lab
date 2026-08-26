@@ -15,7 +15,7 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
-    <div className={styles.breadcrumbs}>
+    <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
       {items.map((item, index) => (
         <Fragment key={item.label}>
           {index > 0 && (
@@ -32,6 +32,6 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
           )}
         </Fragment>
       ))}
-    </div>
+    </nav>
   );
 }

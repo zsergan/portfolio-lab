@@ -12,6 +12,9 @@
   gap: 7px;
 }
 
+/* A fixed dark rgba rather than var(--border): each swatch's own background
+   is a computed shade, not the site's surface, so a border that adapts to
+   the *site's* theme wouldn't relate to what it's outlining. */
 .shade,
 .shadeRecommended {
   flex: 1;

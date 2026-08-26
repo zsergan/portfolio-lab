@@ -18,7 +18,7 @@ export function ColorContrastCheckerPage() {
   const { status: copyStatus, copy } = useCopyToClipboard();
 
   const ratio = Math.round(getContrastRatio(foreground, background) * 100) / 100;
-  const shades = findNearestPassingShades(foreground, background);
+  const { shades, allPass } = findNearestPassingShades(foreground, background);
 
   function handleSwap() {
     setForeground(background);
@@ -69,7 +69,7 @@ export function ColorContrastCheckerPage() {
           <div className={styles.right}>
             <LiveSamplePreview foreground={foreground} background={background} />
 
-            <NearestPassingShades shades={shades} onSelect={setForeground} />
+            <NearestPassingShades shades={shades} allPass={allPass} onSelect={setForeground} />
           </div>
         </div>
       </WorkspaceCard>

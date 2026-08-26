@@ -73,6 +73,76 @@ describe('useKeyboardShortcuts', () => {
     expect(onTrigger).toHaveBeenCalledOnce();
   });
 
+  it('ignores a bare-key combo while a select is focused', () => {
+    const select = document.createElement('select');
+    document.body.appendChild(select);
+    select.focus();
+
+    const onTrigger = vi.fn();
+    renderHook(() => useKeyboardShortcuts([{ combo: 'n', onTrigger }]));
+
+    act(() => {
+      pressKey({ key: 'n' });
+    });
+
+    expect(onTrigger).not.toHaveBeenCalled();
+  });
+
+  it('does not fire a modifier combo while text is selected inside a focused input', () => {
+    const input = document.createElement('input');
+    input.value = '#3d2f6b';
+    document.body.appendChild(input);
+    input.focus();
+    input.setSelectionRange(0, 3);
+
+    const onTrigger = vi.fn();
+    renderHook(() => useKeyboardShortcuts([{ combo: 'mod+c', onTrigger }]));
+
+    act(() => {
+      pressKey({ key: 'c', metaKey: true });
+    });
+
+    expect(onTrigger).not.toHaveBeenCalled();
+  });
+
+  it('does not fire a modifier combo while text is selected on the page', () => {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = 'hello world';
+    document.body.appendChild(paragraph);
+
+    const range = document.createRange();
+    range.selectNodeContents(paragraph);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    const onTrigger = vi.fn();
+    renderHook(() => useKeyboardShortcuts([{ combo: 'mod+c', onTrigger }]));
+
+    act(() => {
+      pressKey({ key: 'c', metaKey: true });
+    });
+
+    expect(onTrigger).not.toHaveBeenCalled();
+    window.getSelection()?.removeAllRanges();
+  });
+
+  it('fires a modifier combo once nothing is selected', () => {
+    const input = document.createElement('input');
+    input.value = '#3d2f6b';
+    document.body.appendChild(input);
+    input.focus();
+    input.setSelectionRange(3, 3);
+
+    const onTrigger = vi.fn();
+    renderHook(() => useKeyboardShortcuts([{ combo: 'mod+c', onTrigger }]));
+
+    act(() => {
+      pressKey({ key: 'c', metaKey: true });
+    });
+
+    expect(onTrigger).toHaveBeenCalledOnce();
+  });
+
   it('does not fire once the component unmounts', () => {
     const onTrigger = vi.fn();
     const { unmount } = renderHook(() => useKeyboardShortcuts([{ combo: 'n', onTrigger }]));

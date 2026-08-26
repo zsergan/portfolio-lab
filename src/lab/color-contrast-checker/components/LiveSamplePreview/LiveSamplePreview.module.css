@@ -12,6 +12,9 @@
   flex-direction: column;
   gap: 14px;
   padding: 20px;
+  /* A fixed dark rgba rather than var(--border): this box's own background
+     is the user's chosen color, not the site's surface, so a border that
+     adapts to the *site's* theme wouldn't relate to what it's outlining. */
   border: 1px solid rgba(17, 17, 18, 0.06);
   border-radius: 10px;
 }

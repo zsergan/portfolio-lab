@@ -80,7 +80,7 @@ describe('ColorContrastCheckerPage', () => {
   it('offers 5 nearest passing shades and sets the foreground when one is clicked', async () => {
     renderPage();
 
-    const shadeButtons = screen.getAllByRole('button', { name: /^Use #[0-9a-f]{6} as the foreground color$/ });
+    const shadeButtons = screen.getAllByRole('button', { name: /^Use #[0-9a-f]{6} as the foreground color/ });
     expect(shadeButtons).toHaveLength(5);
 
     const targetHex = shadeButtons[2].getAttribute('aria-label')!.match(/#[0-9a-f]{6}/)![0];

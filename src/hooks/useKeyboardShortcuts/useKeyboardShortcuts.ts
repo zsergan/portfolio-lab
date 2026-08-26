@@ -27,7 +27,24 @@ function matchesCombo(event: KeyboardEvent, combo: string): boolean {
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
-  return target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable;
+  return target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable;
+}
+
+// A non-collapsed selection — either inside a focused input/textarea (which
+// doesn't show up in window.getSelection(), only via selectionStart/End) or
+// on the page itself — means the user is mid-selection and likely reaching
+// for the browser's own Cmd/Ctrl+C, not this hook's shortcuts. Deferring to
+// the browser here regardless of which combo matched (not just "c") keeps
+// the rule simple and avoids the hook needing to know which keys are
+// copy-like.
+function hasTextSelected(): boolean {
+  const active = document.activeElement;
+  if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement) {
+    if (active.selectionStart !== active.selectionEnd) return true;
+  }
+
+  const selection = window.getSelection();
+  return !!selection && selection.toString().length > 0;
 }
 
 // Reads the current shortcuts through a ref, rather than depending on them
@@ -50,8 +67,10 @@ export function useKeyboardShortcuts(shortcuts: Shortcut[]) {
 
       // A bare key (no modifier) must not fire while the user is typing —
       // e.g. "n" shouldn't trigger while entering a hex value that happens
-      // to contain the letter. Modifier combos are safe regardless of focus.
+      // to contain the letter. Modifier combos are safe regardless of focus,
+      // except when the user has text selected (see hasTextSelected).
       if (!shortcut.combo.includes('mod') && isTypingTarget(event.target)) return;
+      if (hasTextSelected()) return;
 
       event.preventDefault();
       shortcut.onTrigger();
