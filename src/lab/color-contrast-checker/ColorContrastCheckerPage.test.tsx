@@ -76,4 +76,16 @@ describe('ColorContrastCheckerPage', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('#3d2f6b / #f2eee4');
     expect(await screen.findByRole('button', { name: 'Copied' })).toBeInTheDocument();
   });
+
+  it('offers 5 nearest passing shades and sets the foreground when one is clicked', async () => {
+    renderPage();
+
+    const shadeButtons = screen.getAllByRole('button', { name: /^Use #[0-9a-f]{6} as the foreground color$/ });
+    expect(shadeButtons).toHaveLength(5);
+
+    const targetHex = shadeButtons[2].getAttribute('aria-label')!.match(/#[0-9a-f]{6}/)![0];
+    await userEvent.click(shadeButtons[2]);
+
+    expect(screen.getByLabelText('Foreground')).toHaveValue(targetHex);
+  });
 });

@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
 import { ContrastRatioDisplay } from './components/ContrastRatioDisplay/ContrastRatioDisplay';
+import { NearestPassingShades } from './components/NearestPassingShades/NearestPassingShades';
 import { getContrastRatio } from './utils/contrastRatio/contrastRatio';
+import { findNearestPassingShades } from './utils/nearestPassingShades/nearestPassingShades';
 import { BackLink, Button, ColorField, Description, WorkspaceCard } from '@/components';
 import { useCopyToClipboard } from '@/hooks';
 import { SwapIcon } from '@/icons';
@@ -21,6 +23,7 @@ export function ColorContrastCheckerPage() {
   const { status: copyStatus, copy } = useCopyToClipboard();
 
   const ratio = Math.round(getContrastRatio(foreground, background) * 100) / 100;
+  const shades = findNearestPassingShades(foreground, background);
 
   function handleSwap() {
     setForeground(background);
@@ -83,6 +86,8 @@ export function ColorContrastCheckerPage() {
               <p className={styles.previewBody}>Body copy at 15px — the size most of the page actually uses.</p>
               <p className={styles.previewCaption}>Caption at 12px, the first thing to fail an audit.</p>
             </div>
+
+            <NearestPassingShades shades={shades} onSelect={setForeground} />
           </div>
         </div>
       </WorkspaceCard>
