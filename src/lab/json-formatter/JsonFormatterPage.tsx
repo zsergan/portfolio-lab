@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useJsonFormat } from './hooks/useJsonFormat';
-import { BackLink, Button, Description, TextArea, TextAreaOutput, Toggle } from '@/components';
+import { Breadcrumbs, Button, TextArea, TextAreaOutput, Toggle, ToolIntro } from '@/components';
 import { useCopyToClipboard } from '@/hooks';
 
 import styles from './JsonFormatterPage.module.css';
@@ -25,10 +25,8 @@ export function JsonFormatterPage() {
 
   return (
     <div>
-      <BackLink to="/lab">Back to Lab</BackLink>
-
-      <h2>JSON Formatter &amp; Validator</h2>
-      <Description>Pretty-print, minify, and validate JSON with inline error feedback.</Description>
+      <Breadcrumbs slug="json-formatter" />
+      <ToolIntro toolId="json-formatter" />
 
       <div className={styles.workspace}>
         <TextArea

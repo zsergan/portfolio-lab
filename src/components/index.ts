@@ -1,4 +1,4 @@
-export { BackLink } from './BackLink/BackLink';
+export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export { Button } from './Button/Button';
 export { ColorField } from './form/ColorField/ColorField';
 export { Description } from './typography/Description/Description';
@@ -13,4 +13,5 @@ export { TagList } from './TagList/TagList';
 export { TextArea } from './form/TextArea/TextArea';
 export { TextAreaOutput } from './form/TextAreaOutput/TextAreaOutput';
 export { Toggle } from './form/Toggle/Toggle';
+export { ToolIntro } from './ToolIntro/ToolIntro';
 export { WorkspaceCard } from './WorkspaceCard/WorkspaceCard';

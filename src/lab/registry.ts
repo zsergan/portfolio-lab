@@ -13,7 +13,7 @@ export interface LabTool {
   status: ToolStatus;
   /** route path relative to the site root, e.g. "/lab/json-formatter" */
   path: string;
-  /** topic tags, e.g. "Forms", "State Management" — rendered as a TagList on the index card */
+  /** topic tags, e.g. "Forms", "State Management" — rendered as a TagList on the index card and as chips on the tool's own detail page */
   topics?: string[];
   /** present only once status is 'done' — kept lazy so each tool is its own chunk */
   component?: () => Promise<{ default: ComponentType }>;
@@ -23,21 +23,22 @@ export const labTools: LabTool[] = [
   {
     id: 'json-formatter',
     title: 'JSON Formatter & Validator',
-    description: 'Pretty-print, minify, and validate JSON with inline error feedback.',
+    description:
+      'Paste a payload, get it readable — with the parse error pointed at the exact line instead of a stack trace.',
     highlights: 'Discriminated-union state (idle/valid/error), useMemo-based formatting.',
     status: 'done',
     path: '/lab/json-formatter',
-    topics: ['TypeScript', 'Hooks'],
+    topics: ['TypeScript', 'React Hooks', 'Clipboard API'],
     component: () => import('./json-formatter/JsonFormatterPage').then((m) => ({ default: m.JsonFormatterPage })),
   },
   {
     id: 'color-contrast-checker',
     title: 'Color Contrast Checker',
-    description: 'Compare two colors against WCAG AA/AAA contrast ratio thresholds.',
+    description: 'Two colors, every WCAG threshold at once, and the nearest shade that actually passes.',
     highlights: 'Controlled color inputs, derived state, accessibility-first UI.',
     status: 'done',
     path: '/lab/color-contrast-checker',
-    topics: ['Accessibility'],
+    topics: ['TypeScript', 'Accessibility', 'OKLCH'],
     component: () =>
       import('./color-contrast-checker/ColorContrastCheckerPage').then((m) => ({
         default: m.ColorContrastCheckerPage,
@@ -50,7 +51,7 @@ export const labTools: LabTool[] = [
     highlights: 'Generic, typed conversion functions; utility types for unit config.',
     status: 'done',
     path: '/lab/unit-converter',
-    topics: ['TypeScript'],
+    topics: ['TypeScript', 'Generics'],
     component: () => import('./unit-converter/UnitConverterPage').then((m) => ({ default: m.UnitConverterPage })),
   },
   {

@@ -7,7 +7,7 @@ import { NearestPassingShades } from './components/NearestPassingShades/NearestP
 import { WcagChecksGrid } from './components/WcagChecksGrid/WcagChecksGrid';
 import { getContrastRatio } from './utils/contrastRatio/contrastRatio';
 import { findNearestPassingShades } from './utils/nearestPassingShades/nearestPassingShades';
-import { BackLink, Description, WorkspaceCard } from '@/components';
+import { Breadcrumbs, ToolIntro, WorkspaceCard } from '@/components';
 import { useCopyToClipboard } from '@/hooks';
 
 import styles from './ColorContrastCheckerPage.module.css';
@@ -33,10 +33,8 @@ export function ColorContrastCheckerPage() {
 
   return (
     <div>
-      <BackLink to="/lab">Back to Lab</BackLink>
-
-      <h2>Color Contrast Checker</h2>
-      <Description>Compare two colors against WCAG AA/AAA contrast ratio thresholds.</Description>
+      <Breadcrumbs slug="color-contrast-checker" />
+      <ToolIntro toolId="color-contrast-checker" />
 
       <WorkspaceCard
         filename="contrast.tsx"

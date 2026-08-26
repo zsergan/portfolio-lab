@@ -1,0 +1,26 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 26px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.lab {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.lab:hover,
+.lab:focus-visible {
+  color: var(--accent);
+}
+
+.separator {
+  color: var(--border);
+}
+
+.slug {
+  color: var(--text-h);
+}
