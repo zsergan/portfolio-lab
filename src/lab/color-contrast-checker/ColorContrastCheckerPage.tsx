@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { getContrastRatio } from './contrastRatio';
+import { ContrastRatioDisplay } from './components/ContrastRatioDisplay/ContrastRatioDisplay';
+import { getContrastRatio } from './utils/contrastRatio/contrastRatio';
 import { BackLink, Button, ColorField, Description, WorkspaceCard } from '@/components';
 import { useCopyToClipboard } from '@/hooks';
 import { SwapIcon } from '@/icons';
@@ -58,10 +59,7 @@ export function ColorContrastCheckerPage() {
               <ColorField id="background" label="Background" value={background} onChange={setBackground} />
             </div>
 
-            <p className={styles.ratio}>
-              <span className={styles.ratioValue}>{ratio.toFixed(2)}</span>
-              <span className={styles.ratioSuffix}>: 1</span>
-            </p>
+            <ContrastRatioDisplay ratio={ratio} />
 
             <ul className={styles.checks}>
               {CHECKS.map((check) => {

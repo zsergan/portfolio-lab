@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ratio {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+.ratioValue {
+  font-family: var(--sans);
+  font-size: var(--text-display);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-h);
+  letter-spacing: -0.01em;
+}
+
+.ratioSuffix {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.scale {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.scaleTrack {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-subtle);
+  overflow: hidden;
+}
+
+.scaleFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+}
+
+.scaleTick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--surface);
+}
+
+.scaleLabels {
+  position: relative;
+  height: 12px;
+}
+
+.scaleLabel {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text);
+}

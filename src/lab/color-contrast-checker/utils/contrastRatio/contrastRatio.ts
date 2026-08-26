@@ -1,4 +1,4 @@
-function hexToRgb(hex: string): [number, number, number] {
+export function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace('#', '');
   const r = parseInt(clean.slice(0, 2), 16);
   const g = parseInt(clean.slice(2, 4), 16);
@@ -6,7 +6,7 @@ function hexToRgb(hex: string): [number, number, number] {
   return [r, g, b];
 }
 
-function toLinear(channel: number): number {
+export function toLinear(channel: number): number {
   const c = channel / 255;
   return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 }
@@ -21,4 +21,10 @@ export function getContrastRatio(foreground: string, background: string): number
   const lighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
   return (lighter + 0.05) / (darker + 0.05);
+}
+
+// Logarithmic position (0-1) of a ratio on the 1:1-21:1 WCAG range, so the
+// visually-meaningful low end of the scale isn't squeezed by a linear one.
+export function scalePosition(ratio: number): number {
+  return Math.max(0, Math.min(1, Math.log(ratio) / Math.log(21)));
 }
