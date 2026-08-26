@@ -1,0 +1,38 @@
+.fields {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.fields > :first-child,
+.fields > :last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Offsets the button past each ColorField's label row, so it lines up
+   with the swatch instead of the top of the whole field column. */
+.swapButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: 26px;
+  padding: 0;
+  border-radius: 8px;
+  background: var(--surface-subtle);
+}
+
+@media (max-width: 480px) {
+  .fields {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .swapButton {
+    align-self: center;
+    margin-top: 0;
+  }
+}
