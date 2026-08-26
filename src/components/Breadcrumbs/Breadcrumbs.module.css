@@ -7,20 +7,24 @@
   font-size: 12px;
 }
 
-.lab {
+.link {
   color: var(--text);
   text-decoration: none;
 }
 
-.lab:hover,
-.lab:focus-visible {
+.link:hover,
+.link:focus-visible {
   color: var(--accent);
 }
 
+/* var(--border) is calibrated for hairlines against var(--surface), not
+   text against the page's own var(--bg) — the two are close enough in
+   both themes that a border-colored slash all but disappears here. */
 .separator {
-  color: var(--border);
+  color: var(--text);
+  opacity: 0.45;
 }
 
-.slug {
+.current {
   color: var(--text-h);
 }

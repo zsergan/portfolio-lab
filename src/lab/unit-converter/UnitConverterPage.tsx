@@ -31,7 +31,7 @@ export function UnitConverterPage() {
 
   return (
     <div>
-      <Breadcrumbs slug="unit-converter" />
+      <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'unit-converter' }]} />
       <ToolIntro toolId="unit-converter" />
 
       <Toggle options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />

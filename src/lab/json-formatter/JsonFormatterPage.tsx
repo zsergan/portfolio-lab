@@ -25,7 +25,7 @@ export function JsonFormatterPage() {
 
   return (
     <div>
-      <Breadcrumbs slug="json-formatter" />
+      <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'json-formatter' }]} />
       <ToolIntro toolId="json-formatter" />
 
       <div className={styles.workspace}>

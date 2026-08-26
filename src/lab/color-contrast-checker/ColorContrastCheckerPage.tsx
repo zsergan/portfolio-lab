@@ -33,7 +33,7 @@ export function ColorContrastCheckerPage() {
 
   return (
     <div>
-      <Breadcrumbs slug="color-contrast-checker" />
+      <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'color-contrast-checker' }]} />
       <ToolIntro toolId="color-contrast-checker" />
 
       <WorkspaceCard
