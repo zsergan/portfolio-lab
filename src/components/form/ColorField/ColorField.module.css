@@ -6,20 +6,50 @@
 
 .controls {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  flex-direction: column;
+  gap: 7px;
 }
 
+/* Native <input type="color"> ships its own chrome (a padded wrapper plus
+   an inset swatch with a hardcoded border) that a plain border/background
+   override can't reach — strip it via the pseudo-elements below so the
+   swatch is filled edge-to-edge with the picked color. */
 .swatch {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 60px;
   padding: 0;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(17, 17, 18, 0.08);
   border-radius: 8px;
   background: none;
+  appearance: none;
   cursor: pointer;
 }
 
+.swatch::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 8px;
+}
+
+.swatch::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+}
+
+.swatch::-moz-color-swatch {
+  border: none;
+  border-radius: 8px;
+}
+
 .hexField {
-  width: 160px;
+  width: 100%;
+}
+
+/* The shared Input component doesn't take style overrides, so reach the
+   native element through the CSS module scope instead of touching it. */
+.hexField input {
+  height: auto;
+  padding: 5px 8px;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 11.5px;
 }

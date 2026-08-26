@@ -1,29 +1,36 @@
 import { useState } from 'react';
 
 import { getContrastRatio } from './contrastRatio';
-import { BackLink, Button, ColorField, Description } from '@/components';
+import { BackLink, Button, ColorField, Description, WorkspaceCard } from '@/components';
+import { useCopyToClipboard } from '@/hooks';
 import { SwapIcon } from '@/icons';
 
 import styles from './ColorContrastCheckerPage.module.css';
 
-const AA_THRESHOLD = 4.5;
-const AAA_THRESHOLD = 7;
+const CHECKS = [
+  { label: 'AA · normal', threshold: 4.5 },
+  { label: 'AA · large', threshold: 3 },
+  { label: 'AAA · normal', threshold: 7 },
+  { label: 'AAA · large', threshold: 4.5 },
+];
 
 export function ColorContrastCheckerPage() {
-  const [foreground, setForeground] = useState('#000000');
-  const [background, setBackground] = useState('#ffffff');
+  const [foreground, setForeground] = useState('#3d2f6b');
+  const [background, setBackground] = useState('#f2eee4');
+  const { status: copyStatus, copy } = useCopyToClipboard();
 
-  // Round once and compare against the rounded figure, so the displayed
-  // ratio and the pass/fail verdict can never disagree (e.g. a true ratio
-  // of 4.495 must not show "4.50:1" next to "Fail").
   const ratio = Math.round(getContrastRatio(foreground, background) * 100) / 100;
-  const passesAA = ratio >= AA_THRESHOLD;
-  const passesAAA = ratio >= AAA_THRESHOLD;
 
   function handleSwap() {
     setForeground(background);
     setBackground(foreground);
   }
+
+  function handleCopyPair() {
+    copy(`${foreground} / ${background}`);
+  }
+
+  const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy pair';
 
   return (
     <div>
@@ -32,36 +39,55 @@ export function ColorContrastCheckerPage() {
       <h2>Color Contrast Checker</h2>
       <Description>Compare two colors against WCAG AA/AAA contrast ratio thresholds.</Description>
 
-      <div className={styles.container}>
-        <div className={styles.fields}>
-          <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
+      <WorkspaceCard
+        filename="contrast.tsx"
+        actions={[
+          { label: 'Swap', onClick: handleSwap },
+          { label: copyLabel, onClick: handleCopyPair },
+        ]}
+      >
+        <div className={styles.body}>
+          <div className={styles.left}>
+            <div className={styles.fields}>
+              <ColorField id="foreground" label="Foreground" value={foreground} onChange={setForeground} />
 
-          <Button onClick={handleSwap} ariaLabel="Swap" className={styles.swapButton}>
-            <SwapIcon />
-          </Button>
+              <Button onClick={handleSwap} ariaLabel="Swap colors" className={styles.swapButton}>
+                <SwapIcon />
+              </Button>
 
-          <ColorField id="background" label="Background" value={background} onChange={setBackground} />
+              <ColorField id="background" label="Background" value={background} onChange={setBackground} />
+            </div>
+
+            <p className={styles.ratio}>
+              <span className={styles.ratioValue}>{ratio.toFixed(2)}</span>
+              <span className={styles.ratioSuffix}>: 1</span>
+            </p>
+
+            <ul className={styles.checks}>
+              {CHECKS.map((check) => {
+                const passes = ratio >= check.threshold;
+
+                return (
+                  <li key={check.label} className={styles.check}>
+                    {check.label}
+                    <strong className={passes ? styles.pass : styles.fail}>{passes ? 'pass' : 'fail'}</strong>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className={styles.right}>
+            <p className={styles.microLabel}>Live Sample</p>
+
+            <div className={styles.preview} style={{ color: foreground, background }}>
+              <p className={styles.previewHeading}>Heading, 22px bold</p>
+              <p className={styles.previewBody}>Body copy at 15px — the size most of the page actually uses.</p>
+              <p className={styles.previewCaption}>Caption at 12px, the first thing to fail an audit.</p>
+            </div>
+          </div>
         </div>
-
-        <div className={styles.result}>
-          <p className={styles.preview} style={{ color: foreground, background }}>
-            The quick brown fox jumps over the lazy dog.
-          </p>
-
-          <p className={styles.ratio}>{ratio.toFixed(2)}:1</p>
-
-          <ul className={styles.checks}>
-            <li>
-              AA (4.5:1):{' '}
-              <strong className={passesAA ? styles.pass : styles.fail}>{passesAA ? 'Pass' : 'Fail'}</strong>
-            </li>
-            <li>
-              AAA (7:1):{' '}
-              <strong className={passesAAA ? styles.pass : styles.fail}>{passesAAA ? 'Pass' : 'Fail'}</strong>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </WorkspaceCard>
     </div>
   );
 }

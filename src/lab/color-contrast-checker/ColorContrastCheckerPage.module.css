@@ -1,30 +1,60 @@
-/* Shared max-width so .fields and .result share the same right edge
-   by construction, instead of only lining up when their content widths
-   happen to match. Wide enough that the two ColorFields + swap button
-   never wrap at their natural width (2 * 208px fields + 40px button +
-   2 * 16px gaps = 488px). */
-.container {
-  max-width: 520px;
+.body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border-right: 1px solid var(--border);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface-subtle-2);
+}
+
+@media (max-width: 720px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
 }
 
 .fields {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 10px;
+}
+
+.fields > :first-child,
+.fields > :last-child {
+  flex: 1;
+  min-width: 0;
 }
 
 /* Offsets the button past each ColorField's label row, so it lines up
-   with the swatch/hex row instead of the top of the whole field column. */
+   with the swatch instead of the top of the whole field column. */
 .swapButton {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   margin-top: 26px;
   padding: 0;
+  border-radius: 8px;
+  background: var(--surface-subtle);
 }
 
 @media (max-width: 480px) {
@@ -39,23 +69,14 @@
   }
 }
 
-.result {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.preview {
-  margin: 0;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: var(--text-lg);
-}
-
 .ratio {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   margin: 0;
+}
+
+.ratioValue {
   font-family: var(--sans);
   font-size: var(--text-display);
   font-weight: var(--weight-extrabold);
@@ -63,35 +84,81 @@
   letter-spacing: -0.01em;
 }
 
-.checks {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.ratioSuffix {
   font-family: var(--mono);
-  font-size: var(--text-sm);
+  font-size: 12.5px;
   color: var(--text);
 }
 
-/* Both pass 4.5:1 against this site's own --bg in light and dark mode —
-   verified with the same formula this tool ships, so its own verdict
-   text doesn't fail the exact check it's performing. */
+.checks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text);
+}
+
+/* Both hand-verified to pass 4.5:1 against --surface-subtle in light and
+   dark mode, using the same formula this tool ships. */
 .pass {
-  color: #15803d;
+  font-weight: var(--weight-semibold);
+  color: var(--success-text);
 }
 
 .fail {
-  color: #b91c1c;
+  font-weight: var(--weight-semibold);
+  color: var(--danger);
 }
 
-@media (prefers-color-scheme: dark) {
-  .pass {
-    color: #4ade80;
-  }
+.microLabel {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
 
-  .fail {
-    color: #f87171;
-  }
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid rgba(17, 17, 18, 0.06);
+  border-radius: 10px;
+}
+
+.previewHeading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: var(--weight-extrabold);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.previewBody {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.previewCaption {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
 }
