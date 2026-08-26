@@ -1,4 +1,4 @@
-import { labTools } from '@/lab/registry';
+import { getToolNumber, labTools } from '@/lab/registry';
 
 import styles from './ToolIntro.module.css';
 
@@ -7,11 +7,10 @@ interface ToolIntroProps {
 }
 
 export function ToolIntro({ toolId }: ToolIntroProps) {
-  const index = labTools.findIndex((tool) => tool.id === toolId);
-  const tool = labTools[index];
+  const tool = labTools.find((candidate) => candidate.id === toolId);
   if (!tool) return null;
 
-  const number = String(index + 1).padStart(2, '0');
+  const number = getToolNumber(toolId);
 
   return (
     <div className={styles.intro}>

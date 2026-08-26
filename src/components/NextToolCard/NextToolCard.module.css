@@ -1,0 +1,42 @@
+.card {
+  padding: 18px 20px;
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.list {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: var(--weight-semibold);
+  color: var(--text-h);
+}
+
+.row:hover .title,
+.row:focus-visible .title {
+  color: var(--accent);
+}
+
+.number {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text);
+}

@@ -2,6 +2,13 @@ import type { ReactNode } from 'react';
 
 import styles from './Eyebrow.module.css';
 
-export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className={styles.eyebrow}>// {children}</p>;
+interface EyebrowProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function Eyebrow({ children, className }: EyebrowProps) {
+  const combined = className ? `${styles.eyebrow} ${className}` : styles.eyebrow;
+
+  return <p className={combined}>// {children}</p>;
 }

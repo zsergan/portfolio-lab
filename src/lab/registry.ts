@@ -15,6 +15,8 @@ export interface LabTool {
   path: string;
   /** topic tags, e.g. "Forms", "State Management" — rendered as a TagList on the index card and as chips on the tool's own detail page */
   topics?: string[];
+  /** first-person aside about a specific build decision, shown as a "// build note" card on the tool's detail page */
+  buildNote?: string;
   /** present only once status is 'done' — kept lazy so each tool is its own chunk */
   component?: () => Promise<{ default: ComponentType }>;
 }
@@ -39,6 +41,8 @@ export const labTools: LabTool[] = [
     status: 'done',
     path: '/lab/color-contrast-checker',
     topics: ['TypeScript', 'Accessibility', 'OKLCH'],
+    buildNote:
+      'The ratio is the easy half. Suggesting the closest passing shade is the useful one — it walks lightness in OKLCH so the hue stays recognisable instead of collapsing toward grey.',
     component: () =>
       import('./color-contrast-checker/ColorContrastCheckerPage').then((m) => ({
         default: m.ColorContrastCheckerPage,
@@ -118,3 +122,9 @@ export const labTools: LabTool[] = [
     topics: ['TypeScript'],
   },
 ];
+
+/** 2-digit position of a tool within `labTools`, e.g. "02" — the number shown next to its title and in "next tool" rows. */
+export function getToolNumber(id: string): string {
+  const index = labTools.findIndex((tool) => tool.id === id);
+  return String(index + 1).padStart(2, '0');
+}

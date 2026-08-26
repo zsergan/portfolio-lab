@@ -7,8 +7,8 @@ import { NearestPassingShades } from './components/NearestPassingShades/NearestP
 import { WcagChecksGrid } from './components/WcagChecksGrid/WcagChecksGrid';
 import { getContrastRatio } from './utils/contrastRatio/contrastRatio';
 import { findNearestPassingShades } from './utils/nearestPassingShades/nearestPassingShades';
-import { Breadcrumbs, ToolIntro, WorkspaceCard } from '@/components';
-import { useCopyToClipboard } from '@/hooks';
+import { Breadcrumbs, BuildNoteCard, NextToolCard, ShortcutsCard, ToolIntro, WorkspaceCard } from '@/components';
+import { useCopyToClipboard, useKeyboardShortcuts } from '@/hooks';
 
 import styles from './ColorContrastCheckerPage.module.css';
 
@@ -30,6 +30,14 @@ export function ColorContrastCheckerPage() {
   }
 
   const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy pair';
+
+  const shortcuts = [
+    { label: 'Swap colors', combo: 'mod+s', onTrigger: handleSwap },
+    { label: 'Copy pair', combo: 'mod+c', onTrigger: handleCopyPair },
+    { label: 'Use nearest shade', combo: 'n', onTrigger: () => setForeground(shades[0]) },
+  ];
+
+  useKeyboardShortcuts(shortcuts);
 
   return (
     <div>
@@ -65,6 +73,15 @@ export function ColorContrastCheckerPage() {
           </div>
         </div>
       </WorkspaceCard>
+
+      <div className={styles.bottomRow}>
+        <BuildNoteCard toolId="color-contrast-checker" />
+
+        <div className={styles.sidebar}>
+          <ShortcutsCard shortcuts={shortcuts} />
+          <NextToolCard currentToolId="color-contrast-checker" />
+        </div>
+      </div>
     </div>
   );
 }

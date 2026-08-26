@@ -29,3 +29,22 @@
     border-bottom: 1px solid var(--border);
   }
 }
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .bottomRow {
+    grid-template-columns: 1fr;
+  }
+}
