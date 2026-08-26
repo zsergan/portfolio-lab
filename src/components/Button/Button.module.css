@@ -1,4 +1,4 @@
-.button {
+.default {
   padding: 6px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -10,13 +10,50 @@
   cursor: pointer;
 }
 
-.button:hover:not(:disabled),
-.button:focus-visible:not(:disabled) {
+.default:hover:not(:disabled),
+.default:focus-visible:not(:disabled) {
   border-color: var(--accent-border);
   background: var(--accent-bg);
 }
 
-.button:disabled {
+/* Inverted fill (heading color on bg color, rather than a literal black)
+   so it stays legible in dark mode too — the design it's drawn from has
+   no dark variant of its own (light-only "solid #111112" primary button). */
+.primary,
+.secondary {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.primary {
+  border: 1px solid var(--text-h);
+  background: var(--text-h);
+  color: var(--bg);
+}
+
+.secondary {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.primary:hover:not(:disabled),
+.secondary:hover:not(:disabled) {
+  border-color: var(--accent-border);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.default:disabled,
+.primary:disabled,
+.secondary:disabled {
   opacity: 0.5;
   cursor: default;
 }

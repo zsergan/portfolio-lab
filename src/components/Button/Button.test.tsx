@@ -46,4 +46,27 @@ describe('Button', () => {
 
     expect(screen.getByRole('button', { name: 'Click me' })).toHaveClass('square');
   });
+
+  it('calls onClick for the primary and secondary variants too', async () => {
+    const user = userEvent.setup();
+    const onPrimary = vi.fn();
+    const onSecondary = vi.fn();
+
+    render(
+      <>
+        <Button onClick={onPrimary} variant="primary">
+          Swap
+        </Button>
+        <Button onClick={onSecondary} variant="secondary">
+          Copy pair
+        </Button>
+      </>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Swap' }));
+    await user.click(screen.getByRole('button', { name: 'Copy pair' }));
+
+    expect(onPrimary).toHaveBeenCalledOnce();
+    expect(onSecondary).toHaveBeenCalledOnce();
+  });
 });
