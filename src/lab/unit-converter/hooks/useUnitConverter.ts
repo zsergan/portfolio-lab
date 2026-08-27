@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { convertSelection, convertSelectionReverse, getUnitLabels } from '../converter';
-import type { ConverterSelection, Unit, UnitCategory } from '../converter';
+import { convertSelection, formatConvertedValue, getUnitLabels, parseAmount } from '../utils/converter/converter';
+import type { ConverterSelection, Unit, UnitCategory } from '../utils/converter/converter';
 
 // Each entry's from/to is typed against its own category's Unit<C>
 // (rather than a single Record<UnitCategory, ...> keyed generically), so
@@ -11,37 +11,28 @@ const DEFAULTS: {
   length: { value: string; from: Unit<'length'>; to: Unit<'length'> };
   weight: { value: string; from: Unit<'weight'>; to: Unit<'weight'> };
   temperature: { value: string; from: Unit<'temperature'>; to: Unit<'temperature'> };
+  data: { value: string; from: Unit<'data'>; to: Unit<'data'> };
 } = {
   length: { value: '1000', from: 'meter', to: 'kilometer' },
   weight: { value: '1', from: 'kilogram', to: 'pound' },
   temperature: { value: '0', from: 'celsius', to: 'fahrenheit' },
+  data: { value: '1', from: 'megabyte', to: 'mebibyte' },
 };
-
-// Which of the two number fields the user is actively typing into. Its raw
-// text is kept verbatim (so e.g. "1." isn't reformatted away mid-keystroke);
-// the other field's text is always derived fresh from it via
-// convertSelection/convertSelectionReverse.
-type Driver = 'amount' | 'result';
 
 interface UseUnitConverterResult {
   category: UnitCategory;
   from: Unit<UnitCategory>;
   to: Unit<UnitCategory>;
   unitOptions: { value: Unit<UnitCategory>; label: string }[];
-  amount: string;
+  value: string;
   result: string;
-  amountError: string | null;
-  resultError: string | null;
+  error: string | null;
   setCategory: (next: UnitCategory) => void;
-  setAmount: (next: string) => void;
-  setResult: (next: string) => void;
+  setValue: (next: string) => void;
   setFrom: (next: Unit<UnitCategory>) => void;
   setTo: (next: Unit<UnitCategory>) => void;
   swap: () => void;
-}
-
-function formatNumber(value: number): string {
-  return String(Math.round(value * 10000) / 10000);
+  reset: () => void;
 }
 
 // Unlike useJsonFormat (a pure derivation: the page owns `input`, the hook
@@ -63,9 +54,7 @@ export function useUnitConverter(): UseUnitConverterResult {
     from: DEFAULTS.length.from,
     to: DEFAULTS.length.to,
   });
-  const [driver, setDriver] = useState<Driver>('amount');
-  const [amountRaw, setAmountRaw] = useState(DEFAULTS.length.value);
-  const [resultRaw, setResultRaw] = useState('');
+  const [value, setValue] = useState(DEFAULTS.length.value);
 
   const unitLabels = getUnitLabels(selection.category);
   const unitOptions = Object.entries(unitLabels).map(([unit, label]) => ({ value: unit, label })) as {
@@ -73,55 +62,34 @@ export function useUnitConverter(): UseUnitConverterResult {
     label: string;
   }[];
 
-  // A native <input type="number">'s .value is sanitized by the browser to
-  // always be either "" or a valid floating-point number string, so
-  // Number(driverRaw) can never be NaN here — only emptiness needs checking
-  // (verified empirically: neither typing nor programmatically setting a
-  // non-numeric string ever leaves a non-empty, non-numeric .value). This
-  // holds for whichever field is currently the driver, since both Amount
-  // and Converted are the same kind of number input.
-  const driverRaw = driver === 'amount' ? amountRaw : resultRaw;
-  const isValidNumber = driverRaw.trim() !== '';
-  const numericValue = Number(driverRaw);
+  // The FROM field is a plain text input (not a browser-validated
+  // <input type="number">), so both emptiness and garbage text ("abc")
+  // have to be checked here rather than relying on .value sanitization.
+  const parsed = parseAmount(value);
+  const isValid = value.trim() !== '' && Number.isFinite(parsed);
 
-  const amount =
-    driver === 'amount'
-      ? amountRaw
-      : isValidNumber
-        ? formatNumber(convertSelectionReverse(selection, numericValue))
-        : '';
-  const result =
-    driver === 'result' ? resultRaw : isValidNumber ? formatNumber(convertSelection(selection, numericValue)) : '';
-
-  const amountError = driver === 'amount' && !isValidNumber ? 'Enter a number to convert.' : null;
-  const resultError = driver === 'result' && !isValidNumber ? 'Enter a number to convert.' : null;
+  const result = isValid ? formatConvertedValue(convertSelection(selection, parsed)) : '—';
+  const error = isValid ? null : 'Enter a number to convert.';
 
   function setCategory(next: UnitCategory) {
     switch (next) {
       case 'length':
         setSelection({ category: 'length', from: DEFAULTS.length.from, to: DEFAULTS.length.to });
-        setAmountRaw(DEFAULTS.length.value);
+        setValue(DEFAULTS.length.value);
         break;
       case 'weight':
         setSelection({ category: 'weight', from: DEFAULTS.weight.from, to: DEFAULTS.weight.to });
-        setAmountRaw(DEFAULTS.weight.value);
+        setValue(DEFAULTS.weight.value);
         break;
       case 'temperature':
         setSelection({ category: 'temperature', from: DEFAULTS.temperature.from, to: DEFAULTS.temperature.to });
-        setAmountRaw(DEFAULTS.temperature.value);
+        setValue(DEFAULTS.temperature.value);
+        break;
+      case 'data':
+        setSelection({ category: 'data', from: DEFAULTS.data.from, to: DEFAULTS.data.to });
+        setValue(DEFAULTS.data.value);
         break;
     }
-    setDriver('amount');
-  }
-
-  function setAmount(next: string) {
-    setDriver('amount');
-    setAmountRaw(next);
-  }
-
-  function setResult(next: string) {
-    setDriver('result');
-    setResultRaw(next);
   }
 
   function setFrom(next: Unit<UnitCategory>) {
@@ -132,15 +100,14 @@ export function useUnitConverter(): UseUnitConverterResult {
     setSelection({ ...selection, to: next } as ConverterSelection);
   }
 
-  // Swaps From/To *and* the two currently displayed values together: the
-  // old Converted value becomes the new Amount verbatim (no recomputation
-  // needed — flipping both the units and which number sits in which slot
-  // is its own inverse), and the new Converted value falls out of the
-  // normal amount-drives-result derivation above.
+  // Swaps only From/To — the Converted value is always derived, so there's
+  // nothing to carry over the way the old Amount/Converted swap had to.
   function swap() {
     setSelection({ ...selection, from: selection.to, to: selection.from } as ConverterSelection);
-    setAmountRaw(result);
-    setDriver('amount');
+  }
+
+  function reset() {
+    setCategory(selection.category);
   }
 
   return {
@@ -148,15 +115,14 @@ export function useUnitConverter(): UseUnitConverterResult {
     from: selection.from,
     to: selection.to,
     unitOptions,
-    amount,
+    value,
     result,
-    amountError,
-    resultError,
+    error,
     setCategory,
-    setAmount,
-    setResult,
+    setValue,
     setFrom,
     setTo,
     swap,
+    reset,
   };
 }

@@ -9,7 +9,6 @@ export { Input } from './form/Input/Input';
 export { Label } from './form/Label/Label';
 export { NextToolCard } from './NextToolCard/NextToolCard';
 export { QueryBoundary } from './QueryBoundary/QueryBoundary';
-export { Select } from './form/Select/Select';
 export { ShortcutsCard } from './ShortcutsCard/ShortcutsCard';
 export { Skeleton } from './Skeleton/Skeleton';
 export { Tag } from './Tag/Tag';

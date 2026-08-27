@@ -1,7 +1,9 @@
-import type { UnitCategory } from './converter';
+import { CategoryTabs } from './components/CategoryTabs/CategoryTabs';
+import { UnitConversionFields } from './components/UnitConversionFields/UnitConversionFields';
 import { useUnitConverter } from './hooks/useUnitConverter';
-import { Breadcrumbs, Button, Input, Select, Toggle, ToolIntro } from '@/components';
-import { SwapIcon } from '@/icons';
+import type { UnitCategory } from './utils/converter/converter';
+import { Breadcrumbs, ToolIntro, WorkspaceCard } from '@/components';
+import { useCopyToClipboard } from '@/hooks';
 
 import styles from './UnitConverterPage.module.css';
 
@@ -9,6 +11,7 @@ const CATEGORY_OPTIONS: { value: UnitCategory; label: string }[] = [
   { value: 'length', label: 'Length' },
   { value: 'weight', label: 'Weight' },
   { value: 'temperature', label: 'Temperature' },
+  { value: 'data', label: 'Data' },
 ];
 
 export function UnitConverterPage() {
@@ -17,60 +20,51 @@ export function UnitConverterPage() {
     from,
     to,
     unitOptions,
-    amount,
+    value,
     result,
-    amountError,
-    resultError,
+    error,
     setCategory,
-    setAmount,
-    setResult,
+    setValue,
     setFrom,
     setTo,
     swap,
+    reset,
   } = useUnitConverter();
+  const { status: copyStatus, copy } = useCopyToClipboard();
+
+  const toLabel = unitOptions.find((option) => option.value === to)?.label ?? to;
+  const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy';
 
   return (
     <div>
       <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'unit-converter' }]} />
       <ToolIntro toolId="unit-converter" />
 
-      <Toggle options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />
+      <WorkspaceCard
+        filename="convert.tsx"
+        actions={[
+          { label: 'Swap', onClick: swap },
+          { label: copyLabel, onClick: () => copy(`${result} ${toLabel}`), disabled: !!error },
+          { label: 'Reset', onClick: reset },
+        ]}
+      >
+        <div className={styles.body}>
+          <CategoryTabs options={CATEGORY_OPTIONS} value={category} onChange={setCategory} />
 
-      <div className={styles.grid}>
-        <div className={styles.fromField}>
-          <Select id="unit-converter-from" label="From" value={from} onChange={setFrom} options={unitOptions} />
-        </div>
-
-        <div className={styles.toField}>
-          <Select id="unit-converter-to" label="To" value={to} onChange={setTo} options={unitOptions} />
-        </div>
-
-        <Button onClick={swap} ariaLabel="Swap" className={styles.swapButton}>
-          <SwapIcon />
-        </Button>
-
-        <div className={styles.amountField}>
-          <Input
-            id="unit-converter-amount"
-            type="number"
-            label="Amount"
-            value={amount}
-            onChange={setAmount}
-            error={amountError}
+          <UnitConversionFields
+            from={from}
+            to={to}
+            unitOptions={unitOptions}
+            value={value}
+            result={result}
+            error={error}
+            onValueChange={setValue}
+            onFromChange={setFrom}
+            onToChange={setTo}
+            onSwap={swap}
           />
         </div>
-
-        <div className={styles.resultField}>
-          <Input
-            id="unit-converter-result"
-            type="number"
-            label="Converted"
-            value={result}
-            onChange={setResult}
-            error={resultError}
-          />
-        </div>
-      </div>
+      </WorkspaceCard>
     </div>
   );
 }

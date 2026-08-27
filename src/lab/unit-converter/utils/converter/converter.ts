@@ -1,4 +1,4 @@
-export type UnitCategory = 'length' | 'weight' | 'temperature';
+export type UnitCategory = 'length' | 'weight' | 'temperature' | 'data';
 
 interface UnitConfig {
   label: string;
@@ -35,10 +35,24 @@ const temperatureUnits = {
   kelvin: { label: 'Kelvin', toBase: (v: number) => v - 273.15, fromBase: (v: number) => v + 273.15 },
 } satisfies Record<string, UnitConfig>;
 
+// Decimal (SI, powers of 1000) and binary (IEC, powers of 1024) units side
+// by side on purpose — 1 megabyte isn't 1 mebibyte, and that's the whole
+// point of this category existing rather than a single Bytes/KB/MB scale.
+const dataUnits = {
+  byte: { label: 'Bytes', toBase: (v: number) => v, fromBase: (v: number) => v },
+  kilobyte: { label: 'Kilobytes', toBase: (v: number) => v * 1e3, fromBase: (v: number) => v / 1e3 },
+  kibibyte: { label: 'Kibibytes', toBase: (v: number) => v * 1024, fromBase: (v: number) => v / 1024 },
+  megabyte: { label: 'Megabytes', toBase: (v: number) => v * 1e6, fromBase: (v: number) => v / 1e6 },
+  mebibyte: { label: 'Mebibytes', toBase: (v: number) => v * 1024 ** 2, fromBase: (v: number) => v / 1024 ** 2 },
+  gigabyte: { label: 'Gigabytes', toBase: (v: number) => v * 1e9, fromBase: (v: number) => v / 1e9 },
+  gibibyte: { label: 'Gibibytes', toBase: (v: number) => v * 1024 ** 3, fromBase: (v: number) => v / 1024 ** 3 },
+} satisfies Record<string, UnitConfig>;
+
 export const unitsByCategory = {
   length: lengthUnits,
   weight: weightUnits,
   temperature: temperatureUnits,
+  data: dataUnits,
 } satisfies Record<UnitCategory, Record<string, UnitConfig>>;
 
 // The `C extends UnitCategory ? ... : never` form (rather than a plain
@@ -68,6 +82,7 @@ const allUnits: Record<AnyUnit, UnitConfig> = {
   ...lengthUnits,
   ...weightUnits,
   ...temperatureUnits,
+  ...dataUnits,
 };
 
 // The spread above assumes unit keys are unique across categories — verify
@@ -75,7 +90,10 @@ const allUnits: Record<AnyUnit, UnitConfig> = {
 // "ounce") fails loudly at load time instead of one silently overwriting
 // the other's toBase/fromBase in allUnits.
 const expectedUnitCount =
-  Object.keys(lengthUnits).length + Object.keys(weightUnits).length + Object.keys(temperatureUnits).length;
+  Object.keys(lengthUnits).length +
+  Object.keys(weightUnits).length +
+  Object.keys(temperatureUnits).length +
+  Object.keys(dataUnits).length;
 if (Object.keys(allUnits).length !== expectedUnitCount) {
   throw new Error('converter.ts: duplicate unit key across categories in allUnits');
 }
@@ -99,7 +117,7 @@ export type ConverterSelection = {
 }[UnitCategory];
 
 export function convertSelection(selection: ConverterSelection, value: number): number {
-  // The three branches look identical — do not collapse them into a single
+  // The four branches look identical — do not collapse them into a single
   // `return convert(value, selection.from, selection.to)` outside the
   // switch. Only the per-case narrowing gives `selection.from`/`.to` a
   // single, matching Unit<C>; outside the switch they widen back to the
@@ -111,21 +129,8 @@ export function convertSelection(selection: ConverterSelection, value: number): 
       return convert(value, selection.from, selection.to);
     case 'temperature':
       return convert(value, selection.from, selection.to);
-  }
-}
-
-// Mirrors convertSelection with `from`/`to` swapped, for the Unit Converter
-// tool's editable "Converted" field: typing a value there needs to derive
-// the Amount field by converting back from `to` to `from`. Same per-case
-// narrowing requirement as convertSelection above.
-export function convertSelectionReverse(selection: ConverterSelection, value: number): number {
-  switch (selection.category) {
-    case 'length':
-      return convert(value, selection.to, selection.from);
-    case 'weight':
-      return convert(value, selection.to, selection.from);
-    case 'temperature':
-      return convert(value, selection.to, selection.from);
+    case 'data':
+      return convert(value, selection.from, selection.to);
   }
 }
 
@@ -136,4 +141,27 @@ export function getUnitLabels<C extends UnitCategory>(category: C): Record<Unit<
     labels[key as Unit<C>] = units[key as Unit<C>].label;
   }
   return labels;
+}
+
+// Precision scales down as the magnitude grows (an 8-decimal length
+// conversion is noise once the value's in the thousands), and grouping
+// makes a converted byte count actually readable. Non-finite (e.g. from
+// an invalid input slipping through) renders as an em dash rather than
+// "NaN" or "Infinity".
+export function formatConvertedValue(value: number): string {
+  if (!Number.isFinite(value)) return '—';
+
+  const abs = Math.abs(value);
+  const maximumFractionDigits = abs === 0 ? 0 : abs < 0.001 ? 8 : abs < 1 ? 4 : abs < 1000 ? 3 : 2;
+
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits }).format(value);
+}
+
+// Accepts the same input a person would naturally type: surrounding
+// whitespace, thousands separated by spaces, and a comma as the decimal
+// separator (in addition to a plain dot) — the FROM field is a plain text
+// input now, not a browser-validated <input type="number">, so parsing is
+// on us.
+export function parseAmount(raw: string): number {
+  return Number(raw.trim().replace(/\s/g, '').replace(',', '.'));
 }

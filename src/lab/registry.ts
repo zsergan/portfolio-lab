@@ -51,11 +51,12 @@ export const labTools: LabTool[] = [
   {
     id: 'unit-converter',
     title: 'Unit Converter',
-    description: 'Convert between length, weight, and temperature units.',
+    description:
+      'Pick two units, type a number, read the answer — no page reload, no precision lost on the way.',
     highlights: 'Generic, typed conversion functions; utility types for unit config.',
     status: 'done',
     path: '/lab/unit-converter',
-    topics: ['TypeScript', 'Generics'],
+    topics: ['TypeScript', 'Generics', 'Discriminated Unions', 'Intl.NumberFormat'],
     component: () => import('./unit-converter/UnitConverterPage').then((m) => ({ default: m.UnitConverterPage })),
   },
   {
