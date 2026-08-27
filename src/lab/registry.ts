@@ -57,6 +57,8 @@ export const labTools: LabTool[] = [
     status: 'done',
     path: '/lab/unit-converter',
     topics: ['TypeScript', 'Generics', 'Discriminated Unions', 'Intl.NumberFormat'],
+    buildNote:
+      'Every unit converts through a shared toBase/fromBase pair instead of a single ratio, so Fahrenheit\'s offset is just another pair of functions, not a special case in the math. The part worth calling out is the types — a signature that infers each unit\'s category independently looks safe, but actually lets meters convert to kilograms, since nothing ties the two arguments together. Deriving the second unit\'s type from the first one\'s own inferred value is what actually closes that hole.',
     component: () => import('./unit-converter/UnitConverterPage').then((m) => ({ default: m.UnitConverterPage })),
   },
   {

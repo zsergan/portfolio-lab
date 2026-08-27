@@ -12,7 +12,7 @@ describe('BuildNoteCard', () => {
   });
 
   it('renders nothing for a tool with no build note', () => {
-    const { container } = render(<BuildNoteCard toolId="unit-converter" />);
+    const { container } = render(<BuildNoteCard toolId="json-formatter" />);
 
     expect(container).toBeEmptyDOMElement();
   });

@@ -2,8 +2,8 @@ import { CategoryTabs } from './components/CategoryTabs/CategoryTabs';
 import { UnitConversionFields } from './components/UnitConversionFields/UnitConversionFields';
 import { useUnitConverter } from './hooks/useUnitConverter';
 import type { UnitCategory } from './utils/converter/converter';
-import { Breadcrumbs, ToolIntro, WorkspaceCard } from '@/components';
-import { useCopyToClipboard } from '@/hooks';
+import { Breadcrumbs, BuildNoteCard, NextToolCard, ShortcutsCard, ToolIntro, WorkspaceCard } from '@/components';
+import { useCopyToClipboard, useKeyboardShortcuts } from '@/hooks';
 
 import styles from './UnitConverterPage.module.css';
 
@@ -13,6 +13,11 @@ const CATEGORY_OPTIONS: { value: UnitCategory; label: string }[] = [
   { value: 'temperature', label: 'Temperature' },
   { value: 'data', label: 'Data' },
 ];
+
+function nextCategory(current: UnitCategory): UnitCategory {
+  const index = CATEGORY_OPTIONS.findIndex((option) => option.value === current);
+  return CATEGORY_OPTIONS[(index + 1) % CATEGORY_OPTIONS.length].value;
+}
 
 export function UnitConverterPage() {
   const {
@@ -35,6 +40,22 @@ export function UnitConverterPage() {
   const toLabel = unitOptions.find((option) => option.value === to)?.label ?? to;
   const copyLabel = copyStatus === 'copied' ? 'Copied' : copyStatus === 'error' ? 'Copy failed' : 'Copy';
 
+  function handleCopy() {
+    copy(`${result} ${toLabel}`);
+  }
+
+  const shortcuts = [
+    { label: 'Swap units', combo: 'mod+s', onTrigger: swap },
+    // The design's own key for this is bare "Tab", but useKeyboardShortcuts
+    // only exempts typing targets from bare-key combos — the toolbar and
+    // category buttons aren't typing targets, so binding Tab there would
+    // hijack native focus navigation instead of just cycling categories.
+    { label: 'Next category', combo: ']', onTrigger: () => setCategory(nextCategory(category)) },
+    { label: 'Copy result', combo: 'mod+c', onTrigger: handleCopy },
+  ];
+
+  useKeyboardShortcuts(shortcuts);
+
   return (
     <div>
       <Breadcrumbs items={[{ label: 'lab', to: '/lab' }, { label: 'unit-converter' }]} />
@@ -44,7 +65,7 @@ export function UnitConverterPage() {
         filename="convert.tsx"
         actions={[
           { label: 'Swap', onClick: swap },
-          { label: copyLabel, onClick: () => copy(`${result} ${toLabel}`), disabled: !!error },
+          { label: copyLabel, onClick: handleCopy, disabled: !!error },
           { label: 'Reset', onClick: reset },
         ]}
       >
@@ -65,6 +86,15 @@ export function UnitConverterPage() {
           />
         </div>
       </WorkspaceCard>
+
+      <div className={styles.bottomRow}>
+        <BuildNoteCard toolId="unit-converter" />
+
+        <div className={styles.sidebar}>
+          <ShortcutsCard shortcuts={shortcuts} />
+          <NextToolCard currentToolId="unit-converter" />
+        </div>
+      </div>
     </div>
   );
 }
