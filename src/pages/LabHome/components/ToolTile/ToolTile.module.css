@@ -1,0 +1,115 @@
+/* height: 100% fills the grid row's height, not just min-height's floor —
+   the <li> wrapper already stretches to match its row's tallest sibling
+   (grid's default align-items: stretch), but without this the tile itself
+   (the thing with the visible border) stayed only as tall as its own
+   content, so a tile with more tags than its row partner looked taller. */
+.tile {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 186px;
+  padding: 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tileShipped {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.tileShipped:hover,
+.tileShipped:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 6px 18px rgba(17, 17, 18, 0.07);
+  transform: translateY(-2px);
+}
+
+.tilePlanned {
+  border: 1px dashed var(--border);
+  background: transparent;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.number {
+  font-family: var(--mono);
+  font-size: var(--text-xs);
+  color: var(--text-h);
+}
+
+.tilePlanned .number {
+  color: var(--text-faint);
+}
+
+.badge {
+  box-sizing: border-box;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+
+.badgeShipped {
+  color: var(--success-text);
+  background: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.badgePlanned {
+  color: var(--text-faint);
+  background: transparent;
+  border-color: var(--border);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+}
+
+.tilePlanned .title {
+  color: var(--text-faint);
+}
+
+.arrow {
+  display: flex;
+  color: var(--accent);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.tags {
+  margin-top: 16px;
+}
