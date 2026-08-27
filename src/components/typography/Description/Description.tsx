@@ -2,6 +2,12 @@ import type { ReactNode } from 'react';
 
 import styles from './Description.module.css';
 
-export function Description({ children }: { children: ReactNode }) {
-  return <p className={styles.description}>{children}</p>;
+interface DescriptionProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function Description({ children, className }: DescriptionProps) {
+  const combined = className ? `${styles.description} ${className}` : styles.description;
+  return <p className={combined}>{children}</p>;
 }

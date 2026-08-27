@@ -1,41 +1,63 @@
-import { Link } from 'react-router';
+import { useState } from 'react';
 
-import { Description, Label, TagList } from '@/components';
+import { FilterChips } from './components/FilterChips/FilterChips';
+import { ProgressStrip } from './components/ProgressStrip/ProgressStrip';
+import { ToolTile } from './components/ToolTile/ToolTile';
+import { Card, Description, Eyebrow } from '@/components';
 import { labTools } from '@/lab/registry';
+import type { ToolStatus } from '@/lab/registry';
 
 import styles from './LabHome.module.css';
 
+type Filter = 'all' | ToolStatus;
+
+const FILTER_OPTIONS: { value: Filter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'done', label: 'Shipped' },
+  { value: 'planned', label: 'Planned' },
+];
+
 export function LabHome() {
+  const [filter, setFilter] = useState<Filter>('all');
+
   const doneCount = labTools.filter((tool) => tool.status === 'done').length;
+  const visibleTools = filter === 'all' ? labTools : labTools.filter((tool) => tool.status === filter);
 
   return (
     <div>
-      <h2>Lab</h2>
-      <Description>Small, focused dev tools — no accounts, no servers, everything runs in your browser.</Description>
-      <p className={styles.progress}>
-        {doneCount} / {labTools.length} tools built
-      </p>
+      <Eyebrow>lab</Eyebrow>
+      {/* "Ten" is literal, matching labTools.length (10) — update this copy
+          alongside registry.ts if a tool is ever added to or removed from
+          the roadmap. */}
+      <h2 className={styles.heading}>Ten small tools, built in the open.</h2>
+      <Description className={styles.intro}>
+        No accounts, no servers, no analytics. Each one works through a specific front-end problem end to end.
+      </Description>
 
-      <ul className={styles.cardGrid}>
-        {labTools.map((tool) => (
-          <li key={tool.id}>
-            {tool.status === 'done' ? (
-              <Link to={tool.path} className={styles.card}>
-                <span className={styles.cardTitle}>{tool.title}</span>
-                <span className={styles.cardDescription}>{tool.description}</span>
-                {tool.topics && <TagList tags={tool.topics} />}
-              </Link>
-            ) : (
-              <div className={`${styles.card} ${styles.cardPlanned}`}>
-                <span className={styles.cardTitle}>{tool.title}</span>
-                <span className={styles.cardDescription}>{tool.description}</span>
-                {tool.topics && <TagList tags={tool.topics} />}
-                <Label className={styles.cardBadge}>planned</Label>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+      <Card className={styles.toolbar}>
+        <div className={styles.toolbarRow}>
+          <div className={styles.progress}>
+            <span className={styles.progressLabel}>
+              {doneCount} / {labTools.length} shipped
+            </span>
+            <ProgressStrip done={doneCount} total={labTools.length} />
+          </div>
+
+          <FilterChips options={FILTER_OPTIONS} value={filter} onChange={setFilter} />
+        </div>
+      </Card>
+
+      {visibleTools.length === 0 ? (
+        <p className={styles.empty}>No tools match this filter yet.</p>
+      ) : (
+        <ul className={styles.tileGrid}>
+          {visibleTools.map((tool) => (
+            <li key={tool.id}>
+              <ToolTile tool={tool} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

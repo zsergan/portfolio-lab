@@ -1,0 +1,15 @@
+.strip {
+  display: flex;
+  gap: 3px;
+}
+
+.cell {
+  width: 14px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--code-bg);
+}
+
+.cellFilled {
+  background: var(--accent);
+}

@@ -1,62 +1,68 @@
-.progress {
-  margin: 0 0 32px;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: var(--text-sm);
+.heading {
+  margin: 0 0 14px;
+  max-width: 20ch;
+  font-family: var(--sans);
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--text-h);
 }
 
-.cardGrid {
+.intro {
+  max-width: 600px;
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+
+/* margin-top collapses against .intro's own (smaller) bottom margin and
+   wins, so the section gap is a reliable 34px regardless of Description's
+   own built-in spacing — no fight over which stylesheet loads last. */
+.toolbar {
+  margin-top: 34px;
+  margin-bottom: 34px;
+  padding: 16px 18px;
+}
+
+.toolbarRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progressLabel {
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+  color: var(--text-h);
+  white-space: nowrap;
+}
+
+.tileGrid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  background: var(--bg);
-}
-
-a.card:hover,
-a.card:focus-visible {
-  border-color: var(--accent-border);
-  background: var(--accent-bg);
-}
-
-.cardPlanned {
-  opacity: 0.55;
-  cursor: default;
-}
-
-.cardTitle {
-  font-family: var(--sans);
-  font-weight: var(--weight-semibold);
+.empty {
+  margin: 0;
+  color: var(--text-faint);
+  font-family: var(--mono);
   font-size: var(--text-sm);
-  color: var(--text-h);
 }
 
-.cardDescription {
-  font-family: var(--sans);
-  font-size: var(--text-xs);
-  line-height: 140%;
-}
-
-.cardBadge {
-  align-self: flex-start;
-  margin-top: 4px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--code-bg);
+@media (max-width: 900px) {
+  .tileGrid {
+    grid-template-columns: 1fr;
+  }
 }
