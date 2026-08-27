@@ -9,14 +9,15 @@ describe('useJsonFormat', () => {
     expect(renderHook(() => useJsonFormat('   ')).result.current).toEqual({ status: 'idle' });
   });
 
-  it('pretty-prints and minifies valid JSON', () => {
-    const { result } = renderHook(() => useJsonFormat('{"a":1}'));
+  it('pretty-prints and minifies valid JSON, alongside key/depth stats', () => {
+    const { result } = renderHook(() => useJsonFormat('{"a":{"b":1}}'));
 
-    expect(result.current).toEqual({
-      status: 'valid',
-      pretty: '{\n  "a": 1\n}',
-      minified: '{"a":1}',
-    });
+    expect(result.current.status).toBe('valid');
+    if (result.current.status !== 'valid') throw new Error('expected valid state');
+    expect(result.current.pretty).toBe('{\n  "a": {\n    "b": 1\n  }\n}');
+    expect(result.current.minified).toBe('{"a":{"b":1}}');
+    expect(result.current.keyCount).toBe(2);
+    expect(result.current.depth).toBe(2);
   });
 
   it('reports a parse error for invalid JSON', () => {

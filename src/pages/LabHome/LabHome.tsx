@@ -31,7 +31,8 @@ export function LabHome() {
           the roadmap. */}
       <h2 className={styles.heading}>Ten small tools, built in the open.</h2>
       <Description className={styles.intro}>
-        No accounts, no servers, no analytics. Each one works through a specific front-end problem end to end.
+        No accounts, no servers, no analytics. Each one works through a specific front-end problem end to end, and
+        the build note ships with it.
       </Description>
 
       <Card className={styles.toolbar}>
