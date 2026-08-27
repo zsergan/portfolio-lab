@@ -1,0 +1,87 @@
+.pane {
+  display: flex;
+  flex-direction: column;
+  height: 340px;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
+.meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.gutter {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 12px 8px;
+  background: var(--surface-subtle);
+  border-right: 1px solid var(--border);
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.8;
+  color: var(--text-ghost);
+  user-select: none;
+}
+
+/* white-space: pre (not the textarea default pre-wrap) keeps every visual
+   row one-to-one with a logical line — the gutter renders one number per
+   `\n`-delimited line, and a wrapped long line would silently desync the
+   numbers from the rows they're supposed to label. Matches OutputPane's
+   own <pre>, which made the same choice for the same reason. */
+.textarea {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-h);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.8;
+  white-space: pre;
+  resize: none;
+  overflow: auto;
+}
+
+.textarea:focus-visible {
+  outline: none;
+}
+
+.textarea[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+@media (max-width: 900px) {
+  .pane {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}

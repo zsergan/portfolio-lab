@@ -27,10 +27,13 @@ export const labTools: LabTool[] = [
     title: 'JSON Formatter & Validator',
     description:
       'Paste a payload, get it readable — with the parse error pointed at the exact line instead of a stack trace.',
-    highlights: 'Discriminated-union state (idle/valid/error), useMemo-based formatting.',
+    highlights:
+      'Discriminated-union state (idle/valid/error), useMemo-based formatting, recursive key-count/depth stats.',
     status: 'done',
     path: '/lab/json-formatter',
-    topics: ['TypeScript', 'React Hooks', 'Clipboard API'],
+    topics: ['TypeScript', 'React Hooks', 'Discriminated Unions', 'Clipboard API'],
+    buildNote:
+      'JSON.parse is the easy half — it either works or throws. The interesting part was walking the parsed value afterward to compute the key count and nesting depth: arrays add to depth but never to the key count, since array indices aren\'t keys, so a five-item list of plain strings reads as shallow even sitting deep inside the structure.',
     component: () => import('./json-formatter/JsonFormatterPage').then((m) => ({ default: m.JsonFormatterPage })),
   },
   {

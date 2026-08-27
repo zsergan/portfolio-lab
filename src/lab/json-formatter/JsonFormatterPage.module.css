@@ -1,32 +1,29 @@
-.workspace {
+.panes {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+}
 
-  @media (max-width: 1024px) {
+@media (max-width: 900px) {
+  .panes {
     grid-template-columns: 1fr;
   }
 }
 
-/* Matches Output's header height (below) so the Input/Output textareas
-   start at the same y — Output's header is taller than a bare label
-   because it also holds the Pretty/Minify/Copy/Clear toolbar. */
-.inputLabel {
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.sidebar {
   display: flex;
-  align-items: center;
-  min-height: 36px;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.outputHeader {
-  min-height: 36px;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.copyButton {
-  min-width: 68px;
+@media (max-width: 720px) {
+  .bottomRow {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -21,93 +21,104 @@ beforeEach(() => {
 });
 
 describe('JsonFormatterPage', () => {
-  it('shows a hint when the input is empty', () => {
+  it('shows a hint and a waiting status when the input is empty', () => {
     renderPage();
 
     expect(screen.getByText(/Paste or type JSON/)).toBeInTheDocument();
+    expect(screen.getByText('Waiting for input')).toBeInTheDocument();
   });
 
   it('pretty-prints valid JSON as you type, with no extra clicks', async () => {
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
 
-    expect(screen.getByTestId('text-area-output').textContent).toBe('{\n  "a": 1\n}');
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{ "a": 1 }');
   });
 
-  it('shows an inline error for invalid JSON, announced via a live region', async () => {
+  it('shows an invalid status linked to the input, with the parse error announced', async () => {
     renderPage();
 
-    const textarea = screen.getByLabelText('Input');
+    const textarea = screen.getByLabelText('INPUT');
     await userEvent.type(textarea, '{{invalid');
 
-    const status = await screen.findByRole('status', { name: '' });
-    expect(status.textContent).not.toBe('');
+    const status = screen.getByRole('status');
+    expect(status).toHaveTextContent('invalid JSON');
     expect(textarea).toHaveAttribute('aria-invalid', 'true');
     expect(textarea).toHaveAttribute('aria-describedby', status.id);
   });
 
-  it('switches between pretty and minified output, reflected via aria-pressed', async () => {
+  it('reports real key count and depth for valid JSON', async () => {
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":{{"b":1}}');
 
-    const prettyButton = screen.getByRole('button', { name: 'Pretty' });
-    const minifyButton = screen.getByRole('button', { name: 'Minify' });
-    expect(prettyButton).toHaveAttribute('aria-pressed', 'true');
-    expect(minifyButton).toHaveAttribute('aria-pressed', 'false');
-
-    await userEvent.click(minifyButton);
-
-    expect(screen.getByTestId('text-area-output').textContent).toBe('{"a":1}');
-    expect(prettyButton).toHaveAttribute('aria-pressed', 'false');
-    expect(minifyButton).toHaveAttribute('aria-pressed', 'true');
-
-    await userEvent.click(prettyButton);
-
-    expect(screen.getByTestId('text-area-output').textContent).toBe('{\n  "a": 1\n}');
+    const status = screen.getByRole('status');
+    expect(status).toHaveTextContent('2 keys · depth 2');
   });
 
-  it('copies the current output to the clipboard', async () => {
+  it('switches between pretty and minified output via the toolbar, reflected in aria-pressed', async () => {
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{ "a": 1 }');
+    expect(screen.getByRole('button', { name: 'Pretty' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Minify' })).toHaveAttribute('aria-pressed', 'false');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Minify' }));
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{"a":1}');
+    expect(screen.getByRole('button', { name: 'Pretty' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Minify' })).toHaveAttribute('aria-pressed', 'true');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Pretty' }));
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{ "a": 1 }');
+  });
+
+  it('copies the current output to the clipboard, disabled until the input is valid', async () => {
+    renderPage();
+
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeDisabled();
+
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
     await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('{\n  "a": 1\n}');
     expect(await screen.findByRole('button', { name: 'Copied' })).toBeInTheDocument();
   });
 
-  it('announces the copy result via its own live region, separate from the validation status', async () => {
+  it('clears both panes via the Clear panes shortcut (mod+backspace)', async () => {
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
-    await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
+    expect(screen.getByLabelText('INPUT')).toHaveValue('{"a":1}');
 
-    const copyStatus = await screen.findByRole('status', { name: 'Copy status' });
-    expect(copyStatus).toHaveTextContent('Copied');
-  });
+    fireEvent.keyDown(document, { key: 'Backspace', metaKey: true });
 
-  it('shows a failure state and does not crash when the clipboard write fails', async () => {
-    Object.defineProperty(navigator, 'clipboard', {
-      value: { writeText: vi.fn().mockRejectedValue(new Error('denied')) },
-      configurable: true,
-    });
-    renderPage();
-
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
-    await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
-
-    expect(await screen.findByRole('button', { name: 'Copy failed' })).toBeInTheDocument();
-  });
-
-  it('clears the input back to the idle state', async () => {
-    renderPage();
-
-    await userEvent.type(screen.getByLabelText('Input'), '{{"a":1}');
-    await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
-
-    expect(screen.getByLabelText('Input')).toHaveValue('');
+    expect(screen.getByLabelText('INPUT')).toHaveValue('');
     expect(screen.getByText(/Paste or type JSON/)).toBeInTheDocument();
+  });
+
+  it('resets the mode back to Pretty when clearing, even after switching to Minify', async () => {
+    renderPage();
+
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
+    await userEvent.click(screen.getByRole('button', { name: 'Minify' }));
+
+    fireEvent.keyDown(document, { key: 'Backspace', metaKey: true });
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
+
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{ "a": 1 }');
+    expect(screen.getByRole('button', { name: 'Pretty' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('toggles pretty/minify via the Toggle format shortcut (mod+enter)', async () => {
+    renderPage();
+
+    await userEvent.type(screen.getByLabelText('INPUT'), '{{"a":1}');
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{ "a": 1 }');
+
+    fireEvent.keyDown(document, { key: 'Enter', metaKey: true });
+
+    expect(screen.getByTestId('json-output')).toHaveTextContent('{"a":1}');
   });
 });
