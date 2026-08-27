@@ -69,4 +69,18 @@ describe('Button', () => {
     expect(onPrimary).toHaveBeenCalledOnce();
     expect(onSecondary).toHaveBeenCalledOnce();
   });
+
+  it('exposes aria-pressed when given, and omits it entirely otherwise', () => {
+    render(
+      <>
+        <Button onClick={vi.fn()} ariaPressed={true}>
+          Pretty
+        </Button>
+        <Button onClick={vi.fn()}>Copy</Button>
+      </>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Pretty' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Copy' })).not.toHaveAttribute('aria-pressed');
+  });
 });

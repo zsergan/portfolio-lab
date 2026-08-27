@@ -6,16 +6,32 @@ interface ButtonProps {
   onClick: () => void;
   disabled?: boolean;
   ariaLabel?: string;
+  ariaPressed?: boolean;
   className?: string;
   variant?: 'default' | 'primary' | 'secondary';
   children: ReactNode;
 }
 
-export function Button({ onClick, disabled, ariaLabel, className, variant = 'default', children }: ButtonProps) {
+export function Button({
+  onClick,
+  disabled,
+  ariaLabel,
+  ariaPressed,
+  className,
+  variant = 'default',
+  children,
+}: ButtonProps) {
   const combined = className ? `${styles[variant]} ${className}` : styles[variant];
 
   return (
-    <button type="button" className={combined} onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
+    <button
+      type="button"
+      className={combined}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
+    >
       {children}
     </button>
   );
