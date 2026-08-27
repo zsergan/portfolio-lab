@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { UnitConverterPage } from './UnitConverterPage';
 
@@ -17,77 +17,82 @@ describe('UnitConverterPage', () => {
   it('converts 1000 meters to 1 kilometer by default', () => {
     renderPage();
 
-    expect(screen.getByLabelText('Converted')).toHaveValue(1);
+    expect(screen.getByLabelText('From')).toHaveValue('1000');
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 
   it('switches category, resetting to that category\'s defaults', async () => {
     renderPage();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Temperature' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Temperature' }));
 
-    expect(screen.getByLabelText('Converted')).toHaveValue(32);
+    expect(screen.getByLabelText('From')).toHaveValue('0');
+    expect(screen.getByText('32')).toBeInTheDocument();
   });
 
-  it('swaps the from/to units and the amount/converted values together', async () => {
+  it('switches to the new Data category, converting 1 megabyte to mebibytes', async () => {
+    renderPage();
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Data' }));
+
+    expect(screen.getByLabelText('From')).toHaveValue('1');
+    expect(screen.getByLabelText('From unit')).toHaveValue('megabyte');
+    expect(screen.getByLabelText('To unit')).toHaveValue('mebibyte');
+    expect(screen.getByText('0.9537')).toBeInTheDocument();
+  });
+
+  it('swaps the from/to units without changing the typed value', async () => {
     renderPage();
 
     await userEvent.click(screen.getByRole('button', { name: 'Swap' }));
 
-    expect(screen.getByLabelText('From')).toHaveValue('kilometer');
-    expect(screen.getByLabelText('To')).toHaveValue('meter');
-    expect(screen.getByLabelText('Amount')).toHaveValue(1);
-    expect(screen.getByLabelText('Converted')).toHaveValue(1000);
+    expect(screen.getByLabelText('From unit')).toHaveValue('kilometer');
+    expect(screen.getByLabelText('To unit')).toHaveValue('meter');
+    expect(screen.getByLabelText('From')).toHaveValue('1000');
   });
 
-  it('editing the Converted field back-computes Amount', async () => {
+  it('shows an error and a dash result when the From field is cleared', async () => {
     renderPage();
 
-    const result = screen.getByLabelText('Converted');
-    await userEvent.clear(result);
-    await userEvent.type(result, '2');
+    const from = screen.getByLabelText('From');
+    await userEvent.clear(from);
 
-    expect(screen.getByLabelText('Amount')).toHaveValue(2000);
-  });
-
-  it('shows a hint instead of a stale result when Amount is emptied', async () => {
-    renderPage();
-
-    const amount = screen.getByLabelText('Amount');
-    await userEvent.clear(amount);
-
-    const hint = screen.getByText('Enter a number to convert.');
-    expect(hint).toBeInTheDocument();
-    expect(amount).toHaveAttribute('aria-invalid', 'true');
-    expect(amount).toHaveAttribute('aria-describedby', hint.id);
-    expect(screen.getByLabelText('Converted')).toHaveValue(null);
-  });
-
-  it('shows a hint instead of a stale amount when Converted is emptied', async () => {
-    renderPage();
-
-    const result = screen.getByLabelText('Converted');
-    await userEvent.clear(result);
-
-    const hint = screen.getByText('Enter a number to convert.');
-    expect(hint).toBeInTheDocument();
-    expect(result).toHaveAttribute('aria-invalid', 'true');
-    expect(result).toHaveAttribute('aria-describedby', hint.id);
-    expect(screen.getByLabelText('Amount')).toHaveValue(null);
-  });
-
-  it('rejects non-numeric characters, leaving the field effectively empty', async () => {
-    renderPage();
-
-    const amount = screen.getByLabelText('Amount');
-    await userEvent.clear(amount);
-    await userEvent.type(amount, 'abc');
-
-    // A native <input type="number"> sanitizes non-numeric text away
-    // entirely (its .value never becomes 'abc' or anything non-numeric),
-    // so this hits the same empty-value path as the test above rather
-    // than a distinct NaN branch — this test exists to guard that
-    // assumption in case the Input's type ever changes.
-    expect(amount).toHaveValue(null);
     expect(screen.getByText('Enter a number to convert.')).toBeInTheDocument();
+    expect(from).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText('—')).toBeInTheDocument();
+  });
+
+  it('rejects non-numeric characters typed into From', async () => {
+    renderPage();
+
+    const from = screen.getByLabelText('From');
+    await userEvent.clear(from);
+    await userEvent.type(from, 'abc');
+
+    expect(screen.getByText('Enter a number to convert.')).toBeInTheDocument();
+    expect(screen.getByText('—')).toBeInTheDocument();
+  });
+
+  it('resets to the category defaults when Reset is clicked', async () => {
+    renderPage();
+
+    const from = screen.getByLabelText('From');
+    await userEvent.clear(from);
+    await userEvent.type(from, '42');
+    await userEvent.click(screen.getByRole('button', { name: 'Reset' }));
+
+    expect(from).toHaveValue('1000');
+  });
+
+  it('copies the result and unit label, cycling the button label', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+
+    renderPage();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
+
+    expect(writeText).toHaveBeenCalledWith('1 Kilometers');
+    expect(await screen.findByRole('button', { name: 'Copied' })).toBeInTheDocument();
   });
 });
