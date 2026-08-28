@@ -18,6 +18,9 @@ export interface AboutData {
 
 export interface ExperienceEntry {
   years: string;
+  /** Inclusive month count (both start and end months count as full
+   * months), used for the duration label and the relative tenure bar. */
+  months: number;
   role: string;
   company: string;
   client?: string;
@@ -55,7 +58,8 @@ export const aboutData: AboutData = {
 
 export const experienceData: ExperienceEntry[] = [
   {
-    years: 'May 2022 – Nov 2024',
+    years: 'May 2022 — Nov 2024',
+    months: 31,
     role: 'Senior Software Engineer',
     company: 'EPAM Systems',
     client:
@@ -73,9 +77,11 @@ export const experienceData: ExperienceEntry[] = [
     tags: ['React', 'TypeScript', 'Redux Toolkit', 'React Hook Form', 'Zod', 'i18next', 'Material UI', 'Storybook', 'Jest', 'Nx Monorepo'],
   },
   {
-    years: 'May 2021 – Apr 2022',
+    years: 'May 2021 — Apr 2022',
+    months: 12,
     role: 'Front-End Team Lead',
     company: 'SDELKA Real Estate CRM Startup',
+    client: 'Real estate CRM startup, in production with several regional realtor agencies',
     description:
       'Promoted from front-end developer to team lead after proposing a codebase standardization effort. Led a 3-engineer front-end team inside a 7-person product team for about a year, owning requirements, sprint planning, and task distribution.',
     highlights: [
@@ -86,9 +92,11 @@ export const experienceData: ExperienceEntry[] = [
     tags: ['React', 'Redux', 'Storybook', 'Jest', 'Figma'],
   },
   {
-    years: 'Jul 2020 – Apr 2021',
+    years: 'Jul 2020 — Apr 2021',
+    months: 10,
     role: 'Full-Stack Developer',
     company: 'Social Techs',
+    client: 'Yoga-instruction startup, serving both a web client and a companion mobile app',
     description:
       'Built the web front end and Node.js/TypeScript back end for an online yoga platform offering live one-on-one instructor sessions with in-app booking, in a 5-person team.',
     highlights: [

@@ -1,0 +1,116 @@
+.entry {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 24px;
+  padding-bottom: 38px;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* The 132px column is a tight fit for a full date range — the root's
+   global 0.18px letter-spacing (meant for the 18px sans body copy) was
+   just enough overflow to wrap it onto a second line. */
+.period {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text);
+  letter-spacing: normal;
+  white-space: nowrap;
+}
+
+.duration {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-faint);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  border-left: 1px solid var(--border);
+  padding-left: 26px;
+}
+
+.dot {
+  position: absolute;
+  top: 7px;
+  left: -4.5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.role {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--text-h);
+}
+
+.company {
+  font-family: var(--sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--accent);
+}
+
+.client {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-faint);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.highlight {
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .entry {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .meta {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .meta > *:last-child {
+    flex: 1;
+  }
+}

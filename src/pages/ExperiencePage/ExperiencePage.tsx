@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { JobEntry } from './components/JobEntry/JobEntry';
 import { ExperiencePageSkeleton } from './ExperiencePageSkeleton';
-import { Eyebrow, QueryBoundary, TagList } from '@/components';
+import { Eyebrow, QueryBoundary, Skeleton } from '@/components';
 import { fetchExperience } from '@/content/api';
+import { formatDuration } from '@/content/duration';
 
 import styles from './ExperiencePage.module.css';
 
@@ -12,9 +14,22 @@ export function ExperiencePage() {
     queryFn: fetchExperience,
   });
 
+  const maxMonths = data && data.length > 0 ? Math.max(...data.map((entry) => entry.months)) : 0;
+
   return (
     <div>
-      <Eyebrow>experience</Eyebrow>
+      <div className={styles.header}>
+        <Eyebrow className={styles.eyebrow}>experience</Eyebrow>
+
+        {data ? (
+          <span className={styles.summary}>
+            {formatDuration(data.reduce((sum, entry) => sum + entry.months, 0))} · {data.length}{' '}
+            {data.length === 1 ? 'company' : 'companies'}
+          </span>
+        ) : (
+          <Skeleton height={11} width={120} />
+        )}
+      </div>
 
       <QueryBoundary
         isPending={isPending}
@@ -25,23 +40,7 @@ export function ExperiencePage() {
         {data && (
           <ul className={styles.timeline}>
             {data.map((entry) => (
-              <li key={`${entry.company}-${entry.years}`} className={styles.entry}>
-                <span className={styles.years}>{entry.years}</span>
-                <span className={styles.role}>{entry.role}</span>
-                <span className={styles.company}>{entry.company}</span>
-                {entry.client && <span className={styles.client}>{entry.client}</span>}
-                <p className={styles.description}>{entry.description}</p>
-                {entry.highlights && (
-                  <ul className={styles.highlights}>
-                    {entry.highlights.map((highlight) => (
-                      <li key={highlight} className={styles.highlight}>
-                        {highlight}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <TagList tags={entry.tags} />
-              </li>
+              <JobEntry key={`${entry.company}-${entry.years}`} entry={entry} maxMonths={maxMonths} />
             ))}
           </ul>
         )}
