@@ -10,7 +10,6 @@ export function ExperiencePageSkeleton() {
         <li key={i} className={jobEntryStyles.entry}>
           <div className={jobEntryStyles.meta}>
             <Skeleton height={12} width={72} />
-            <Skeleton height={11} width={50} />
             <Skeleton height={4} width="100%" radius={2} />
           </div>
 

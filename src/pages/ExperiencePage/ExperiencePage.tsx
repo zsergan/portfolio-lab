@@ -2,9 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { JobEntry } from './components/JobEntry/JobEntry';
 import { ExperiencePageSkeleton } from './ExperiencePageSkeleton';
-import { Eyebrow, QueryBoundary, Skeleton } from '@/components';
+import { Eyebrow, QueryBoundary } from '@/components';
 import { fetchExperience } from '@/content/api';
-import { formatDuration } from '@/content/duration';
 
 import styles from './ExperiencePage.module.css';
 
@@ -18,18 +17,7 @@ export function ExperiencePage() {
 
   return (
     <div>
-      <div className={styles.header}>
-        <Eyebrow className={styles.eyebrow}>experience</Eyebrow>
-
-        {data ? (
-          <span className={styles.summary}>
-            {formatDuration(data.reduce((sum, entry) => sum + entry.months, 0))} · {data.length}{' '}
-            {data.length === 1 ? 'company' : 'companies'}
-          </span>
-        ) : (
-          <Skeleton height={11} width={120} />
-        )}
-      </div>
+      <Eyebrow className={styles.eyebrow}>experience</Eyebrow>
 
       <QueryBoundary
         isPending={isPending}

@@ -1,7 +1,6 @@
 import { DurationBar } from '../DurationBar/DurationBar';
 import { TagList } from '@/components';
 import type { ExperienceEntry } from '@/content/data';
-import { formatDuration } from '@/content/duration';
 
 import styles from './JobEntry.module.css';
 
@@ -15,7 +14,6 @@ export function JobEntry({ entry, maxMonths }: JobEntryProps) {
     <li className={styles.entry}>
       <div className={styles.meta}>
         <span className={styles.period}>{entry.years}</span>
-        <span className={styles.duration}>{formatDuration(entry.months)}</span>
         <DurationBar months={entry.months} maxMonths={maxMonths} />
       </div>
 

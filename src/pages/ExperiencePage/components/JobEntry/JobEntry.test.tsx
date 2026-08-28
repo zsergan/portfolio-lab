@@ -16,7 +16,7 @@ const entry: ExperienceEntry = {
 };
 
 describe('JobEntry', () => {
-  it('renders the period, computed duration, role, and company', () => {
+  it('renders the period, role, and company', () => {
     render(
       <ul>
         <JobEntry entry={entry} maxMonths={31} />
@@ -24,7 +24,6 @@ describe('JobEntry', () => {
     );
 
     expect(screen.getByText('May 2022 — Nov 2024')).toBeInTheDocument();
-    expect(screen.getByText('2 yr 7 mo')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Senior Software Engineer' })).toBeInTheDocument();
     expect(screen.getByText('EPAM Systems')).toBeInTheDocument();
   });

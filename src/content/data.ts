@@ -19,7 +19,7 @@ export interface AboutData {
 export interface ExperienceEntry {
   years: string;
   /** Inclusive month count (both start and end months count as full
-   * months), used for the duration label and the relative tenure bar. */
+   * months), used for the relative tenure bar. */
   months: number;
   role: string;
   company: string;

@@ -22,12 +22,6 @@
   white-space: nowrap;
 }
 
-.duration {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  color: var(--text-faint);
-}
-
 .content {
   display: flex;
   flex-direction: column;
