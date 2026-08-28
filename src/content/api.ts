@@ -1,5 +1,5 @@
 import { aboutData, contactData, experienceData } from './data';
-import type { AboutData, ContactRow, ExperienceEntry } from './data';
+import type { AboutData, ContactData, ExperienceEntry } from './data';
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -15,7 +15,7 @@ export async function fetchExperience(): Promise<ExperienceEntry[]> {
   return experienceData;
 }
 
-export async function fetchContact(): Promise<ContactRow[]> {
+export async function fetchContact(): Promise<ContactData> {
   await delay(500);
   return contactData;
 }

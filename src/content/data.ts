@@ -3,14 +3,24 @@ export interface AboutStat {
   label: string;
 }
 
+export interface CurrentlyLine {
+  key: string;
+  value: string;
+}
+
 export interface AboutData {
   heading: string;
   paragraphs: string[];
   stats: AboutStat[];
+  currentlyUpdated: string;
+  currentlyLines: CurrentlyLine[];
 }
 
 export interface ExperienceEntry {
   years: string;
+  /** Inclusive month count (both start and end months count as full
+   * months), used for the relative tenure bar. */
+  months: number;
   role: string;
   company: string;
   client?: string;
@@ -22,7 +32,13 @@ export interface ExperienceEntry {
 export interface ContactRow {
   label: string;
   value: string;
-  href: string;
+}
+
+export interface ContactData {
+  headline: string;
+  availability: string;
+  rows: ContactRow[];
+  footnote: string;
 }
 
 export const aboutData: AboutData = {
@@ -34,12 +50,22 @@ export const aboutData: AboutData = {
   stats: [
     { value: '5+yrs', label: 'Experience' },
     { value: '3', label: 'Companies' },
+    { value: '90k+', label: 'Users Served' },
+  ],
+  currentlyUpdated: 'updated aug 2026',
+  // "ten"/"three" are literal, matching labTools.length and its done
+  // count — update this copy alongside registry.ts if that changes.
+  currentlyLines: [
+    { key: 'building', value: 'Lab — ten small browser-only dev tools, three shipped' },
+    { key: 'reading', value: 'Refactoring UI, and everything Redux Toolkit added since v2' },
+    { key: 'open to', value: 'Senior and staff front-end roles, remote or hybrid' },
   ],
 };
 
 export const experienceData: ExperienceEntry[] = [
   {
-    years: 'May 2022 – Nov 2024',
+    years: 'May 2022 — Nov 2024',
+    months: 31,
     role: 'Senior Software Engineer',
     company: 'EPAM Systems',
     client:
@@ -57,9 +83,11 @@ export const experienceData: ExperienceEntry[] = [
     tags: ['React', 'TypeScript', 'Redux Toolkit', 'React Hook Form', 'Zod', 'i18next', 'Material UI', 'Storybook', 'Jest', 'Nx Monorepo'],
   },
   {
-    years: 'May 2021 – Apr 2022',
+    years: 'May 2021 — Apr 2022',
+    months: 12,
     role: 'Front-End Team Lead',
     company: 'SDELKA Real Estate CRM Startup',
+    client: 'Real estate CRM startup, in production with several regional realtor agencies',
     description:
       'Promoted from front-end developer to team lead after proposing a codebase standardization effort. Led a 3-engineer front-end team inside a 7-person product team for about a year, owning requirements, sprint planning, and task distribution.',
     highlights: [
@@ -70,9 +98,11 @@ export const experienceData: ExperienceEntry[] = [
     tags: ['React', 'Redux', 'Storybook', 'Jest', 'Figma'],
   },
   {
-    years: 'Jul 2020 – Apr 2021',
+    years: 'Jul 2020 — Apr 2021',
+    months: 10,
     role: 'Full-Stack Developer',
     company: 'Social Techs',
+    client: 'Yoga-instruction startup, serving both a web client and a companion mobile app',
     description:
       'Built the web front end and Node.js/TypeScript back end for an online yoga platform offering live one-on-one instructor sessions with in-app booking, in a 5-person team.',
     highlights: [
@@ -85,8 +115,13 @@ export const experienceData: ExperienceEntry[] = [
   },
 ];
 
-export const contactData: ContactRow[] = [
-  { label: 'Email', value: 'zrsergan@gmail.com', href: 'mailto:zrsergan@gmail.com' },
-  { label: 'GitHub', value: 'github.com/zsergan', href: 'https://github.com/zsergan' },
-  { label: 'LinkedIn', value: 'linkedin.com/in/zsergan', href: 'https://www.linkedin.com/in/zsergan' },
-];
+export const contactData: ContactData = {
+  headline: 'Email is fastest. Everything else works too.',
+  availability: 'open to senior front-end / full-stack roles',
+  rows: [
+    { label: 'Email', value: 'zrsergan@gmail.com' },
+    { label: 'GitHub', value: 'github.com/zsergan' },
+    { label: 'LinkedIn', value: 'linkedin.com/in/zsergan' },
+  ],
+  footnote: 'click any row to copy · replies usually within a day',
+};

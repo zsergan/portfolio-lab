@@ -1,51 +1,38 @@
+.eyebrow {
+  margin-bottom: 30px;
+}
+
 .heading {
-  margin: 0 0 20px;
+  margin: 0 0 30px;
+  max-width: 22ch;
   font-family: var(--sans);
   font-size: var(--text-display);
   font-weight: var(--weight-bold);
   line-height: 1.15;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.025em;
   color: var(--text-h);
 }
 
 .headingSkeleton {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .intro {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-width: 640px;
-  margin-bottom: 32px;
+  gap: 20px;
+  max-width: 62ch;
+  margin-bottom: 30px;
 }
 
-.divider {
-  margin: 32px 0;
-  border: none;
-  border-top: 1px solid var(--border);
-}
-
-.statList {
-  display: flex;
-  gap: 32px;
-  list-style: none;
+.intro p {
   margin: 0;
-  padding: 0;
+  font-size: var(--text-base);
+  line-height: 1.75;
 }
 
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.statValue {
-  font-family: var(--sans);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-extrabold);
-  letter-spacing: -0.01em;
-  color: var(--text-h);
+.stats {
+  margin-bottom: 30px;
 }
