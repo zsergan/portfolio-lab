@@ -32,7 +32,13 @@ export interface ExperienceEntry {
 export interface ContactRow {
   label: string;
   value: string;
-  href: string;
+}
+
+export interface ContactData {
+  headline: string;
+  availability: string;
+  rows: ContactRow[];
+  footnote: string;
 }
 
 export const aboutData: AboutData = {
@@ -109,8 +115,13 @@ export const experienceData: ExperienceEntry[] = [
   },
 ];
 
-export const contactData: ContactRow[] = [
-  { label: 'Email', value: 'zrsergan@gmail.com', href: 'mailto:zrsergan@gmail.com' },
-  { label: 'GitHub', value: 'github.com/zsergan', href: 'https://github.com/zsergan' },
-  { label: 'LinkedIn', value: 'linkedin.com/in/zsergan', href: 'https://www.linkedin.com/in/zsergan' },
-];
+export const contactData: ContactData = {
+  headline: 'Email is fastest. Everything else works too.',
+  availability: 'open to senior front-end / full-stack roles',
+  rows: [
+    { label: 'Email', value: 'zrsergan@gmail.com' },
+    { label: 'GitHub', value: 'github.com/zsergan' },
+    { label: 'LinkedIn', value: 'linkedin.com/in/zsergan' },
+  ],
+  footnote: 'click any row to copy · replies usually within a day',
+};

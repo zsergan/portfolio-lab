@@ -1,0 +1,48 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 10px;
+  padding: 7px 14px 7px 12px;
+  border: 1px solid var(--success-border);
+  background: var(--success-bg);
+  border-radius: 20px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--success-text);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+.text {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--success-text);
+}
+
+/* rgba(var(--success-text-rgb), ...) rather than a literal rgba(21,128,61,...)
+   so the ring actually matches --success-text's lighter dark-mode green
+   instead of staying the light-mode value everywhere. */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--success-text-rgb), 0.35);
+  }
+
+  70% {
+    box-shadow: 0 0 0 7px rgba(var(--success-text-rgb), 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--success-text-rgb), 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}
