@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { AboutPageSkeleton } from './AboutPageSkeleton';
-import { Eyebrow, Label, QueryBoundary } from '@/components';
+import { CurrentlyCard } from './components/CurrentlyCard/CurrentlyCard';
+import { StatsGrid } from './components/StatsGrid/StatsGrid';
+import { Eyebrow, QueryBoundary } from '@/components';
 import { fetchAbout } from '@/content/api';
+import { labTools } from '@/lab/registry';
 
 import styles from './AboutPage.module.css';
 
@@ -12,9 +15,11 @@ export function AboutPage() {
     queryFn: fetchAbout,
   });
 
+  const shippedCount = labTools.filter((tool) => tool.status === 'done').length;
+
   return (
     <div>
-      <Eyebrow>about</Eyebrow>
+      <Eyebrow className={styles.eyebrow}>about</Eyebrow>
 
       <QueryBoundary isPending={isPending} isError={isError} onRetry={refetch} loading={<AboutPageSkeleton />}>
         {data && (
@@ -27,16 +32,12 @@ export function AboutPage() {
               ))}
             </div>
 
-            <hr className={styles.divider} />
+            <StatsGrid
+              className={styles.stats}
+              stats={[...data.stats, { value: `${shippedCount}/${labTools.length}`, label: 'Lab Tools Shipped' }]}
+            />
 
-            <ul className={styles.statList}>
-              {data.stats.map((stat) => (
-                <li key={stat.label} className={styles.stat}>
-                  <span className={styles.statValue}>{stat.value}</span>
-                  <Label>{stat.label}</Label>
-                </li>
-              ))}
-            </ul>
+            <CurrentlyCard updated={data.currentlyUpdated} lines={data.currentlyLines} />
           </>
         )}
       </QueryBoundary>

@@ -3,10 +3,17 @@ export interface AboutStat {
   label: string;
 }
 
+export interface CurrentlyLine {
+  key: string;
+  value: string;
+}
+
 export interface AboutData {
   heading: string;
   paragraphs: string[];
   stats: AboutStat[];
+  currentlyUpdated: string;
+  currentlyLines: CurrentlyLine[];
 }
 
 export interface ExperienceEntry {
@@ -34,6 +41,15 @@ export const aboutData: AboutData = {
   stats: [
     { value: '5+yrs', label: 'Experience' },
     { value: '3', label: 'Companies' },
+    { value: '90k+', label: 'Users Served' },
+  ],
+  currentlyUpdated: 'updated aug 2026',
+  // "ten"/"three" are literal, matching labTools.length and its done
+  // count — update this copy alongside registry.ts if that changes.
+  currentlyLines: [
+    { key: 'building', value: 'Lab — ten small browser-only dev tools, three shipped' },
+    { key: 'reading', value: 'Refactoring UI, and everything Redux Toolkit added since v2' },
+    { key: 'open to', value: 'Senior and staff front-end roles, remote or hybrid' },
   ],
 };
 
