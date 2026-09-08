@@ -64,6 +64,31 @@ export const aboutData: AboutData = {
 
 export const experienceData: ExperienceEntry[] = [
   {
+    years: 'Nov 2025 — Present',
+    months: 10,
+    role: 'Senior Software Engineer',
+    company: 'Self-employed',
+    description: '',
+    highlights: [
+      'Built most of the Node.js/TypeScript/GraphQL backend and React/Redux admin app for a local commerce platform, from PostgreSQL schemas and migrations to UI.',
+      'Implemented RBAC for 5 staff roles, field-level moderation and order workflows, with segmented push/email/SMS notifications and XLSX reports.',
+      'Modernized a React/TypeScript application for bioassay image review with typed API integration, autosave validation and Vitest/React Testing Library tests.',
+      'Developed a personal finance app as an independent project, using React Native/Expo and NestJS/MySQL for wallets, transactions, monthly limits and multiple currencies.',
+      'Kept wallet balances consistent under concurrent requests using database transactions and row-level locking.',
+      'Added Swagger/OpenAPI documentation, ownership checks, DTO validation and API rate limiting.',
+      'Configured GitHub Actions CI with unit and MySQL-backed e2e tests, CodeQL scanning and dependency review.',
+    ],
+    tags: ['Node.js', 'NestJS', 'React', 'TypeScript', 'Redux Toolkit', 'Material UI', 'Storybook', 'Jest'],
+  },
+  {
+    years: 'Nov 2024 — Oct 2025',
+    months: 12,
+    role: 'Professional Development: Advanced English & Business Communication',
+    company: 'GT Educational Center',
+    description: 'Completed four courses covering English proficiency, business communication and advanced reading.',
+    tags: [],
+  },
+  {
     years: 'May 2022 — Nov 2024',
     months: 31,
     role: 'Senior Software Engineer',
@@ -85,7 +110,7 @@ export const experienceData: ExperienceEntry[] = [
   {
     years: 'May 2021 — Apr 2022',
     months: 12,
-    role: 'Front-End Team Lead',
+    role: 'Software Engineer',
     company: 'SDELKA Real Estate CRM Startup',
     client: 'Real estate CRM startup, in production with several regional realtor agencies',
     description:

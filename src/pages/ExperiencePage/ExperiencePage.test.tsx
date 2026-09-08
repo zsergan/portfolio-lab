@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ExperiencePage } from './ExperiencePage';
@@ -19,8 +19,10 @@ describe('ExperiencePage', () => {
     expect(screen.getByText('Loading…')).toBeInTheDocument();
 
     const firstEntry = experienceData[0];
-    expect(await screen.findByText(firstEntry.company)).toBeInTheDocument();
-    expect(screen.getByText(firstEntry.role)).toBeInTheDocument();
+    const companyElement = await screen.findByText(firstEntry.company);
+    const entryElement = companyElement.closest('li');
+    expect(entryElement).not.toBeNull();
+    expect(within(entryElement as HTMLElement).getByText(firstEntry.role)).toBeInTheDocument();
   });
 
   it('shows an error message and a working retry button when the fetch fails', async () => {
